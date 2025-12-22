@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -18,26 +19,26 @@ import {
     TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { getSubmissions, deleteSubmission, Submission } from "@/lib/submissions";
+import { getOrders, deleteSubmission, Submission } from "@/lib/submissions";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, ShoppingCart, Inbox, View } from "lucide-react";
+import { Trash2, ShoppingCart, View } from "lucide-react";
 import { SubmissionDetailDialog } from "@/components/admin/submission-detail-dialog";
 
-export function SubmissionsTab() {
-    const [submissions, setSubmissions] = useState<Submission[]>([]);
-    const [isSubmissionDetailOpen, setIsSubmissionDetailOpen] = useState(false);
-    const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
+export function OrdersTab() {
+    const [orders, setOrders] = useState<Submission[]>([]);
+    const [isDetailOpen, setIsDetailOpen] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState<Submission | null>(null);
     const { toast } = useToast();
 
     const fetchData = async () => {
         try {
-            const data = await getSubmissions();
-            setSubmissions(data);
+            const data = await getOrders();
+            setOrders(data);
         } catch (error) {
-            console.error("Failed to fetch submissions data", error);
+            console.error("Failed to fetch orders data", error);
             toast({
                 title: "Error",
-                description: "Failed to load submissions.",
+                description: "Failed to load orders.",
                 variant: "destructive",
             });
         }
@@ -47,33 +48,32 @@ export function SubmissionsTab() {
         fetchData();
     }, []);
 
-    const handleSubmissionDelete = async (id: string) => {
+    const handleDelete = async (id: string) => {
         try {
-            await deleteSubmission(id);
-            setSubmissions(prev => prev.filter(s => s.id !== id));
-            toast({ title: "Submission Deleted", description: "The submission has been removed." });
+            await deleteSubmission(id, 'order');
+            setOrders(prev => prev.filter(s => s.id !== id));
+            toast({ title: "Order Deleted", description: "The order has been removed." });
         } catch (error) {
-            toast({ title: "Delete Failed", description: "Could not delete submission.", variant: "destructive" });
+            toast({ title: "Delete Failed", description: "Could not delete order.", variant: "destructive" });
         }
     };
 
-    const openSubmissionDetail = (submission: Submission) => {
-        setSelectedSubmission(submission);
-        setIsSubmissionDetailOpen(true);
+    const openDetail = (order: Submission) => {
+        setSelectedOrder(order);
+        setIsDetailOpen(true);
     };
 
     return (
         <div className="pt-6">
             <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline text-2xl">Form Submissions</CardTitle>
-                    <CardDescription>View all inquiries and order requests from your website.</CardDescription>
+                    <CardTitle className="font-headline text-2xl">Order Submissions</CardTitle>
+                    <CardDescription>View all bulk order requests from your website.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Type</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Contact No.</TableHead>
@@ -83,32 +83,21 @@ export function SubmissionsTab() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {submissions.map((sub) => (
+                            {orders.map((sub) => (
                                 <TableRow key={sub.id}>
-                                    <TableCell>
-                                        {sub.type === 'order' ? (
-                                            <Badge variant="secondary"><ShoppingCart className="mr-1 h-3 w-3" /> Order</Badge>
-                                        ) : (
-                                            <Badge variant="outline"><Inbox className="mr-1 h-3 w-3" /> Inquiry</Badge>
-                                        )}
-                                    </TableCell>
                                     <TableCell>{sub.name}</TableCell>
                                     <TableCell>{sub.email}</TableCell>
-                                    <TableCell>{sub.type === 'order' ? sub.phone : sub.phone || 'N/A'}</TableCell>
+                                    <TableCell>{sub.phone}</TableCell>
                                     <TableCell className="text-sm text-muted-foreground max-w-xs truncate">
-                                        {sub.type === 'order' ? (
-                                            <span>{sub.quantity}kg of {sub.riceType}</span>
-                                        ) : (
-                                            <span>{sub.message}</span>
-                                        )}
+                                        <span>{sub.quantity}kg of {sub.riceType}</span>
                                     </TableCell>
                                     <TableCell>{new Date(sub.timestamp).toLocaleDateString()}</TableCell>
                                     <TableCell className="text-right space-x-1">
-                                        <Button variant="ghost" size="icon" onClick={() => openSubmissionDetail(sub)}>
+                                        <Button variant="ghost" size="icon" onClick={() => openDetail(sub)}>
                                             <View className="h-4 w-4" />
                                             <span className="sr-only">View</span>
                                         </Button>
-                                        <Button variant="ghost" size="icon" onClick={() => handleSubmissionDelete(sub.id)}>
+                                        <Button variant="ghost" size="icon" onClick={() => handleDelete(sub.id)}>
                                             <Trash2 className="h-4 w-4 text-destructive" />
                                             <span className="sr-only">Delete</span>
                                         </Button>
@@ -117,18 +106,18 @@ export function SubmissionsTab() {
                             ))}
                         </TableBody>
                     </Table>
-                    {submissions.length === 0 && (
+                    {orders.length === 0 && (
                         <div className="text-center py-10">
-                            <p className="text-muted-foreground">No submissions yet.</p>
+                            <p className="text-muted-foreground">No orders yet.</p>
                         </div>
                     )}
                 </CardContent>
             </Card>
 
             <SubmissionDetailDialog
-                isOpen={isSubmissionDetailOpen}
-                setIsOpen={setIsSubmissionDetailOpen}
-                submission={selectedSubmission}
+                isOpen={isDetailOpen}
+                setIsOpen={setIsDetailOpen}
+                submission={selectedOrder}
             />
         </div>
     );

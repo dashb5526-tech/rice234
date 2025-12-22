@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -16,7 +17,8 @@ import { TestimonialsTab } from "@/components/admin/tabs/testimonials-tab";
 import { CertificatesTab } from "@/components/admin/tabs/certificates-tab";
 import { PartnersTab } from "@/components/admin/tabs/partners-tab";
 import { ContactTab } from "@/components/admin/tabs/contact-tab";
-import { SubmissionsTab } from "@/components/admin/tabs/submissions-tab";
+import { InquiriesTab } from "@/components/admin/tabs/inquiries-tab";
+import { OrdersTab } from "@/components/admin/tabs/orders-tab";
 import { SocialTab } from "@/components/admin/tabs/social-tab";
 import { LegalTab } from "@/components/admin/tabs/legal-tab";
 import { SeoTab } from "@/components/admin/tabs/seo-tab";
@@ -45,7 +47,8 @@ export default function AdminPage() {
                 <TabsTrigger value="certificates">Certificates</TabsTrigger>
                 <TabsTrigger value="partners">Partners</TabsTrigger>
                 <TabsTrigger value="contact">Contact</TabsTrigger>
-                <TabsTrigger value="submissions">Submissions</TabsTrigger>
+                <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
+                <TabsTrigger value="orders">Orders</TabsTrigger>
                 <TabsTrigger value="social">Social Media</TabsTrigger>
                 <TabsTrigger value="legal">Legal</TabsTrigger>
                 <TabsTrigger value="seo">SEO</TabsTrigger>
@@ -85,8 +88,12 @@ export default function AdminPage() {
               <ContactTab />
             </TabsContent>
 
-            <TabsContent value="submissions">
-              <SubmissionsTab />
+            <TabsContent value="inquiries">
+              <InquiriesTab />
+            </TabsContent>
+
+            <TabsContent value="orders">
+              <OrdersTab />
             </TabsContent>
 
             <TabsContent value="social">

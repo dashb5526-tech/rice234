@@ -46,7 +46,7 @@ const orderFormSchema = z.object({
   phone: z.string().min(10, "Please enter a valid phone number."),
   email: z.string().email("Please enter a valid email address."),
   riceType: z.string({ required_error: "Please select a rice type." }),
-  quantity: z.string().min(1, "Please specify a quantity."),
+  quantity: z.string().regex(/^[1-9]\d*$/, "Please enter a valid quantity."),
   message: z.string().optional(),
 });
 
@@ -194,7 +194,7 @@ export function Contact() {
                           </FormItem>
                         )} />
                         <FormField control={orderForm.control} name="quantity" render={({ field }) => (
-                          <FormItem><FormLabel>Quantity (in kg)</FormLabel><FormControl><Input placeholder="e.g., 500" {...field} /></FormControl><FormMessage /></FormItem>
+                          <FormItem><FormLabel>Quantity (in kg)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500" {...field} /></FormControl><FormMessage /></FormItem>
                         )} />
                       </div>
                       <FormField control={orderForm.control} name="message" render={({ field }) => (
