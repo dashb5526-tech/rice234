@@ -1,0 +1,26 @@
+[
+  {
+    "id": "testimonial-1",
+    "name": "Priya Sharma",
+    "title": "Owner, Spice Route",
+    "quote": "\"Bhawani Shankar Rice consistently delivers the premium quality rice essential for Spice Route's diverse culinary creations. Their commitment to excellence and reliable service makes them an invaluable partner.\" - Priya Sharma, Owner, Spice Route",
+    "rating": 5,
+    "authorImageUrl": "/uploads/1760781291697_IMG-20250929-WA0004.jpg"
+  },
+  {
+    "id": "testimonial-2",
+    "name": "Rajesh Kumar",
+    "title": "god qullit",
+    "quote": "Discover why industry expert Rajesh Kumar, with his discerning eye for quality, consistently chooses Bhawani Shankar Rice. His powerful testimonial reflects our unwavering commitment to excellence and customer satisfaction.",
+    "rating": 5,
+    "authorImageUrl": "https://picsum.photos/seed/rajesh/100/100"
+  },
+  {
+    "id": "testimonial-3",
+    "name": "Anita Desai",
+    "title": "Proprietor, Fresh Mart",
+    "quote": "\"Bhawani Shankar Rice has consistently delivered exceptional quality and unmatched reliability. Their dedication to freshness and timely service is truly commendable, making them an indispensable partner for Fresh Mart.\" - Anita Desai, Proprietor, Fresh Mart",
+    "rating": 5,
+    "authorImageUrl": "https://picsum.photos/seed/anita/100/100"
+  }
+]

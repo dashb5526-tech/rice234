@@ -1,0 +1,44 @@
+
+{
+  "main": {
+    "title": "A Legacy of Quality Rice",
+    "paragraph1": "Dash Rice Traders is a trusted rice trading and distribution company rooted in the rich agricultural heritage of India. We are dedicated to providing high-quality rice varieties, including Basmati, Sona Masoori, and Parboiled rice.",
+    "paragraph2": "Our strength lies in sourcing directly from a network of dedicated farmers, ensuring that every grain is 100% pure and fresh. We deliver this quality to wholesalers, retailers, and households, building relationships based on trust and excellence.",
+    "imageUrl": "https://images.unsplash.com/photo-1686820740687-426a7b9b2043?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxyaWNlJTIwc2Fja3N8ZW58MHx8fHwxNzYwNzcwNzkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "imageHint": "rice sacks"
+  },
+  "services": {
+    "title": "Our Services",
+    "items": [
+      {
+        "id": "service-1",
+        "icon": "Truck",
+        "title": "Bulk Rice Supply",
+        "description": "Reliable supply to wholesalers, retailers, and hotels with consistent quality."
+      },
+      {
+        "id": "service-2",
+        "icon": "Package",
+        "title": "Custom Packaging",
+        "description": "Packaging and branding services for custom orders to meet your market needs."
+      },
+      {
+        "id": "service-3",
+        "icon": "Globe",
+        "title": "Nationwide Delivery",
+        "description": "Efficient local and national delivery network ensuring timely supply."
+      },
+      {
+        "id": "service-4",
+        "icon": "Award",
+        "title": "Export Quality",
+        "description": "Premium, export-quality rice for our international clients across the globe."
+      }
+    ]
+  },
+  "seo": {
+    "title": "About Dash Rice Traders",
+    "description": "Learn about Dash Rice Traders, our legacy of quality, and our commitment to providing the best rice.",
+    "keywords": "about us, rice company, rice legacy, quality rice"
+  }
+}

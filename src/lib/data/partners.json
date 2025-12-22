@@ -1,0 +1,17 @@
+[
+  {
+    "id": "partner-2",
+    "name": "Royal Kitchen Hotels",
+    "logoUrl": "https://images.unsplash.com/photo-1635934929590-1ff981bfaef3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxob3RlbCUyMGxvZ298ZW58MHx8fHwxNzYwNzcwNzkzfDA&ixlib=rb-4.1.0&q=80&w=1080"
+  },
+  {
+    "id": "partner-3",
+    "name": "Global Exports Inc.",
+    "logoUrl": "/uploads/1760781577109_IMG-20251015-WA0002.jpg"
+  },
+  {
+    "id": "partner-4",
+    "name": "Daily Needs Grocers",
+    "logoUrl": "https://images.unsplash.com/photo-1707418838325-d035de0e72d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxncm9jZXJ5JTIwbG9nb3xlbnwwfHx8fDE3NjA3NzA3OTN8MA&ixlib=rb-4.1.0&q=80&w=1080"
+  }
+]

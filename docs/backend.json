@@ -1,0 +1,273 @@
+{
+  "entities": {
+    "RiceProduct": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "RiceProduct",
+      "type": "object",
+      "description": "Represents a rice product offered by Dash Rice Traders.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Rice Product."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the rice product (e.g., Basmati, Sona Masoori)."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the rice product, including its origin and qualities."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image representing the rice product.",
+          "format": "uri"
+        },
+        "price": {
+          "type": "number",
+          "description": "Price of the rice product."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "imageUrl",
+        "price"
+      ]
+    },
+    "CustomerTestimonial": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CustomerTestimonial",
+      "type": "object",
+      "description": "Represents a testimonial from a customer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Customer Testimonial."
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Name of the customer providing the testimonial."
+        },
+        "testimonial": {
+          "type": "string",
+          "description": "The testimonial text provided by the customer."
+        },
+        "date": {
+          "type": "string",
+          "description": "Date when the testimonial was provided.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "customerName",
+        "testimonial",
+        "date"
+      ]
+    },
+    "ImageGalleryItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ImageGalleryItem",
+      "type": "object",
+      "description": "Represents an item in the image gallery.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Gallery Item."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image in the gallery.",
+          "format": "uri"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the image in the gallery."
+        }
+      },
+      "required": [
+        "id",
+        "imageUrl",
+        "description"
+      ]
+    },
+    "ContactFormEntry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContactFormEntry",
+      "type": "object",
+      "description": "Represents an entry from the contact form.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Contact Form Entry."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the person submitting the form."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person submitting the form.",
+          "format": "email"
+        },
+        "message": {
+          "type": "string",
+          "description": "The message submitted through the contact form."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time when the form was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "message",
+        "submissionDate"
+      ]
+    },
+    "WebsiteUser": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WebsiteUser",
+      "type": "object",
+      "description": "Represents a registered user on the website.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Website User."
+        },
+        "username": {
+          "type": "string",
+          "description": "Username of the website user."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the website user.",
+          "format": "email"
+        },
+        "registrationDate": {
+          "type": "string",
+          "description": "Date and time when the user registered.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "email",
+        "registrationDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/rice_products/{riceProductId}",
+        "definition": {
+          "entityName": "RiceProduct",
+          "schema": {
+            "$ref": "#/backend/entities/RiceProduct"
+          },
+          "description": "Stores information about rice products. Requires admin authentication for create, update, and delete operations. Public read access.",
+          "params": [
+            {
+              "name": "riceProductId",
+              "description": "The unique identifier for the rice product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/customer_testimonials/{testimonialId}",
+        "definition": {
+          "entityName": "CustomerTestimonial",
+          "schema": {
+            "$ref": "#/backend/entities/CustomerTestimonial"
+          },
+          "description": "Stores customer testimonials. Requires admin authentication for create, update, and delete operations. Public read access.",
+          "params": [
+            {
+              "name": "testimonialId",
+              "description": "The unique identifier for the customer testimonial."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/image_gallery/{galleryItemId}",
+        "definition": {
+          "entityName": "ImageGalleryItem",
+          "schema": {
+            "$ref": "#/backend/entities/ImageGalleryItem"
+          },
+          "description": "Stores items for the image gallery. Requires admin authentication for create, update, and delete operations. Public read access.",
+          "params": [
+            {
+              "name": "galleryItemId",
+              "description": "The unique identifier for the gallery item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/contact_form_entries/{contactFormEntryId}",
+        "definition": {
+          "entityName": "ContactFormEntry",
+          "schema": {
+            "$ref": "#/backend/entities/ContactFormEntry"
+          },
+          "description": "Stores contact form entries. Requires admin authentication for read, create, update, and delete operations to protect user data.",
+          "params": [
+            {
+              "name": "contactFormEntryId",
+              "description": "The unique identifier for the contact form entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "WebsiteUser",
+          "schema": {
+            "$ref": "#/backend/entities/WebsiteUser"
+          },
+          "description": "Stores user information. Allows users to read/write their own data based on their userId. Admins can manage all user accounts.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the website user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{userId}",
+        "definition": {
+          "entityName": "roles_admin",
+          "schema": {
+            "$ref": "#/backend/entities/WebsiteUser"
+          },
+          "description": "Stores admin user IDs. Existence of a document grants admin privileges.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the admin user."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to be secure, scalable, and easily debuggable, following the core design principles and strategy mandates. It uses path-based ownership and structural segregation to simplify security rules and ensure authorization independence. The structure avoids hierarchical authorization dependencies (`get()`) to maintain atomic operations and improve debuggability. The design explicitly models the application entities like Rice Products, Customer Testimonials, Image Gallery Items, Contact Form Entries, and Website Users, ensuring clarity and predictability.\n\n**Authorization Independence and QAPs:**\n\n*   **Rice Products, Customer Testimonials, and Image Gallery Items:** These are stored in root-level collections (`/rice_products`, `/customer_testimonials`, `/image_gallery`). While the website admin will create/update/delete these items, the lack of user-specific data means authorization focuses on admin roles, not user-based access. To support the required QAPs, security rules will ensure that only authenticated admins can `create`, `update`, and `delete` these documents. The read operations will be allowed for all to display on the website.\n*   **Contact Form Entries:** These are stored in a root-level collection (`/contact_form_entries`). Security rules will restrict read and write access to authenticated admins only to prevent unauthorized access to user contact information. This segregation ensures that only authorized personnel can manage the contact form entries.\n*   **Website Users:** User data is stored under the `/users/{userId}` path, providing path-based ownership. This structure simplifies security rules, as access control is directly tied to the user's ID. Only the authenticated user can read and update their own data, while admins can manage all user accounts.\n\n**Denormalization Strategy:**\n\nSince most collections do not have parent-child relationships that require complex authorization, denormalization is limited. The primary focus is on securing user-specific data and admin-managed content.\n\n*   For user-owned data (`/users/{userId}`), authorization depends on the `request.auth.uid` matching the `userId` path parameter. This eliminates the need for `get()` calls and ensures authorization independence.\n\n**Structural Segregation:**\n\nThe structure segregates data based on access requirements. Public data (rice products, testimonials, gallery images) is stored in root-level collections with rules allowing read access to all. Private user data is stored under `/users/{userId}` with restricted access. Contact form entries are also stored separately with admin-only access.\n\n**Access Modeling:**\n\n*   **Path-Based Ownership:** User data in `/users/{userId}` follows path-based ownership, ensuring that only the authenticated user can access their data.\n*   **Global Roles (DBAC):** Admin roles are managed via a dedicated `/roles_admin/{uid}` collection. The existence of a document in this collection grants admin privileges."
+  }
+}

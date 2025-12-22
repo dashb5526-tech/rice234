@@ -1,0 +1,124 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero",
+      "description": "Lush green rice paddy field under a clear blue sky",
+      "imageUrl": "https://images.unsplash.com/photo-1604384041761-71d680147eb7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxyaWNlJTIwcGFkZHl8ZW58MHx8fHwxNzYwNzUxOTU4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice paddy"
+    },
+    {
+      "id": "about",
+      "description": "Burlap sacks filled with different varieties of rice grains",
+      "imageUrl": "https://images.unsplash.com/photo-1686820740687-426a7b9b2043?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxyaWNlJTIwc2Fja3N8ZW58MHx8fHwxNzYwNzcwNzkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice sacks"
+    },
+    {
+      "id": "basmati-grain",
+      "description": "Close-up of long, slender Basmati rice grains",
+      "imageUrl": "https://images.unsplash.com/photo-1627482265910-5c0ff6bee088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmFzbWF0aSUyMHJpY2V8ZW58MHx8fHwxNzYwNzMxMjY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "basmati rice"
+    },
+    {
+      "id": "sona-masoori-grain",
+      "description": "Close-up of medium-grain Sona Masoori rice",
+      "imageUrl": "https://picsum.photos/seed/104/500/500",
+      "imageHint": "sona masoori"
+    },
+    {
+      "id": "parboiled-grain",
+      "description": "Close-up of golden-hued Parboiled rice grains",
+      "imageUrl": "https://storage.googleapis.com/aip-dev-user-uploads/a721c54e-e110-410e-8f20-b38466e3b2e7.png",
+      "imageHint": "parboiled rice"
+    },
+    {
+      "id": "brown-rice-grain",
+      "description": "Close-up of whole-grain brown rice",
+      "imageUrl": "https://images.unsplash.com/photo-1669563794789-2412eeb7e62d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YnJvd24lMjByaWNlfGVufDB8fHx8MTc2MDc3MDc5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "brown rice"
+    },
+    {
+      "id": "broken-rice-grain",
+      "description": "Fragments of rice grains, broken during processing. An economical choice for various dishes and industries.",
+      "imageUrl": "https://images.unsplash.com/photo-1705147289789-6df2593f1b1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxicm9rZW4lMjByaWNlfGVufDB8fHx8MTc2MDc3MDc5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "broken rice"
+    },
+    {
+      "id": "gallery-1",
+      "description": "Farmer walking through a golden rice field during sunset",
+      "imageUrl": "https://images.unsplash.com/photo-1589746164246-8f32d747c43c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmYXJtZXIlMjBzdW5zZXR8ZW58MHx8fHwxNzYwNzcwNzkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "farmer sunset"
+    },
+    {
+      "id": "gallery-2",
+      "description": "Hands holding a handful of freshly harvested rice grains",
+      "imageUrl": "https://images.unsplash.com/photo-1627482265910-5c0ff6bee088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aGFuZHMlMjByaWNlfGVufDB8fHx8MTc2MDc3MDc5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hands rice"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Modern rice milling and processing machinery",
+      "imageUrl": "https://images.unsplash.com/photo-1684867934409-01bc36b579bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxyaWNlJTIwbWlsbHxlbnwwfHx8fDE3NjA3NzA3OTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice mill"
+    },
+    {
+      "id": "gallery-4",
+      "description": "Large warehouse with neatly stacked sacks of rice",
+      "imageUrl": "https://images.unsplash.com/photo-1739204618173-3e89def7140f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxyaWNlJTIwd2FyZWhvdXNlfGVufDB8fHx8MTc2MDc3MDc5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice warehouse"
+    },
+    {
+      "id": "gallery-5",
+      "description": "A steaming bowl of cooked white rice",
+      "imageUrl": "https://images.unsplash.com/photo-1516684732162-798a0062be99?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjb29rZWQlMjByaWNlfGVufDB8fHx8MTc2MDc3MDc5M3ww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageHint": "cooked rice"
+    },
+    {
+      "id": "gallery-6",
+      "description": "Sunlight filtering through rice stalks in a field",
+      "imageUrl": "https://images.unsplash.com/photo-1651981350249-6173caeeb660?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cmljZSUyMGZpZWxkfGVufDB8fHx8MTc2MDc3MDc5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice field"
+    },
+    {
+      "id": "gallery-7",
+      "description": "A truck being loaded with rice sacks for distribution",
+      "imageUrl": "https://images.unsplash.com/photo-1592838064575-70ed626d3a0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0cnVjayUyMGxvZ2lzdGljc3xlbnwwfHx8fDE3NjA3NjA5NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "truck logistics"
+    },
+    {
+      "id": "gallery-8",
+      "description": "Close-up of a burlap sack with a custom brand label",
+      "imageUrl": "https://images.unsplash.com/photo-1705147289789-6df2593f1b1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyaWNlJTIwYnJhbmRpbmd8ZW58MHx8fHwxNzYwNzcwNzkzfDA&ixlibrb-4.1.0&q=80&w=1080",
+      "imageHint": "rice branding"
+    },
+    {
+      "id": "partner-logo-1",
+      "description": "Logo for a partner company 'Green Valley Organics'",
+      "imageUrl": "https://images.unsplash.com/photo-1562783912-21ad31ee2a83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjA3MzA4NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "partner-logo-2",
+      "description": "Logo for a partner company 'Royal Kitchen Hotels'",
+      "imageUrl": "https://images.unsplash.com/photo-1635934929590-1ff981bfaef3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxob3RlbCUyMGxvZ298ZW58MHx8fHwxNzYwNzcwNzkzfDA&ixlibrb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel logo"
+    },
+    {
+      "id": "partner-logo-3",
+      "description": "Logo for a partner company 'Global Exports Inc.'",
+      "imageUrl": "https://images.unsplash.com/photo-1654362238150-5616adaacc87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxleHBvcnQlMjBsb2dvfGVufDB8fHx8MTc2MDc3MDc5M3ww&ixlibrb-4.1.0&q=80&w=1080",
+      "imageHint": "export logo"
+    },
+    {
+      "id": "partner-logo-4",
+      "description": "Logo for a partner company 'Daily Needs Grocers'",
+      "imageUrl": "https://images.unsplash.com/photo-1707418838325-d035de0e72d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxncm9jZXJ5JTIwbG9nb3xlbnwwfHx8fDE3NjA3NzA3OTN8MA&ixlibrb-4.1.0&q=80&w=1080",
+      "imageHint": "grocery logo"
+    },
+    {
+      "id": "map",
+      "description": "A map showing the location of Cuttack, Odisha, India",
+      "imageUrl": "https://images.unsplash.com/photo-1568137223448-0708e0e4779c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bWFwJTIwQ3V0dGFja3xlbnwwfHx8fDE3NjA3NzA3OTN8MA&ixlibrb-4.1.0&q=80&w=1080",
+      "imageHint": "map Cuttack"
+    }
+  ]
+}

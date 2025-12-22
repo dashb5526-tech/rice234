@@ -1,0 +1,18 @@
+{
+  "brand": {
+    "name": "              Bhawani Shankar Rice Traders",
+    "logoUrl": "/uploads/1765685095335_Preview_art_Monk_base.webp",
+    "footerDescription": "Bhawani Shankar Rice is committed to providing premium quality rice, carefully selected and processed to ensure purity, taste, and nutrition for your family. Experience the tradition of excellence with every meal."
+  },
+  "hero": {
+    "headline": "From Our Farms to Your Table",
+    "subheadline": "Bhawani Shankar Rice: Delivering pure, fresh, and trusted quality rice, sourced directly from the heart of India's farmlands.",
+    "imageUrl": "https://images.unsplash.com/photo-1604384041761-71d680147eb7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxyaWNlJTIwcGFkZHl8ZW58MHx8fHwxNzYwNzUxOTU4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "imageHint": "rice paddy"
+  },
+  "seo": {
+    "title": "Bhawani Shankar Rice: Pure, Fresh Quality from Indian Farms",
+    "description": "Bhawani Shankar Rice offers pure, fresh, and trusted quality rice, directly sourced from India's fertile farmlands. Experience purity in every grain, from our farms to your table.",
+    "keywords": "Bhawani Shankar Rice, pure rice, fresh rice, quality rice, Indian rice, farm-fresh rice, trusted rice, premium rice"
+  }
+}
