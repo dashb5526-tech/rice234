@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 function ProductCard({ product }: { product: Product }) {
   const imageSrc = product.imageUrl;
   const productUrl = `/products/${encodeURIComponent(product.name.toLowerCase().replace(/\s+/g, '-'))}`;
+  const productSlug = encodeURIComponent(product.name.toLowerCase().replace(/\s+/g, '-'));
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Ensure we get the full URL for sharing
@@ -26,7 +27,7 @@ function ProductCard({ product }: { product: Product }) {
   }, [productUrl]);
 
   return (
-    <Card className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+    <Card id={productSlug} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl scroll-mt-20">
       <Link href={productUrl}>
         {imageSrc && (
             <div className="relative h-56 w-full">
@@ -137,6 +138,23 @@ export function Products({ isHomePage = false }: { isHomePage?: boolean }) {
           </p>
         </div>
 
+        {!isHomePage && products.length > 0 && (
+          <div className="my-8 text-center">
+            <h3 className="text-lg font-semibold mb-4">Jump to a product:</h3>
+            <div className="flex flex-wrap justify-center gap-2">
+              {products.map((product) => (
+                <a
+                  key={product.id}
+                  href={`#${encodeURIComponent(product.name.toLowerCase().replace(/\s+/g, '-'))}`}
+                  className="px-3 py-1 bg-gray-200 text-gray-800 rounded-full text-sm font-medium hover:bg-gray-300"
+                >
+                  {product.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {displayedProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -153,4 +171,3 @@ export function Products({ isHomePage = false }: { isHomePage?: boolean }) {
     </section>
   );
 }
-    
