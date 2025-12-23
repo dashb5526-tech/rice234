@@ -16,6 +16,8 @@ import { signIn, signUp } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 interface AuthViewProps {
     onLoginSuccess?: () => void;
@@ -26,6 +28,7 @@ export function AuthView({ onLoginSuccess }: AuthViewProps) {
     const [loginPassword, setLoginPassword] = useState("");
     const [signupEmail, setSignupEmail] = useState("");
     const [signupPassword, setSignupPassword] = useState("");
+    const [activeTab, setActiveTab] = useState("login");
     const { toast } = useToast();
     const router = useRouter();
 
@@ -46,10 +49,23 @@ export function AuthView({ onLoginSuccess }: AuthViewProps) {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        const { success, error } = await signUp(signupEmail, signupPassword);
-        if (success) {
-            toast({ title: "Signup Successful", description: "You can now log in." });
-            // After successful signup, we can switch the user to the login tab.
+        // The signUp function from @/lib/auth already handles user creation in firestore
+        const { success, user, error } = await signUp(signupEmail, signupPassword);
+        if (success && user) {
+             // Create a document in the 'users' collection
+            await setDoc(doc(db, "users", user.uid), {
+                email: user.email,
+                isAdmin: false, // Default isAdmin to false
+            });
+
+            toast({ title: "Signup Successful", description: "Your account has been created. You can now log in." });
+            // Switch to login tab after successful signup
+            setLoginEmail(signupEmail); // pre-fill email
+            setLoginPassword("");
+            setSignupEmail("");
+            setSignupPassword("");
+            setActiveTab("login");
+
         } else {
             toast({ title: "Signup Failed", description: error, variant: "destructive" });
         }
@@ -57,7 +73,7 @@ export function AuthView({ onLoginSuccess }: AuthViewProps) {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-background">
-            <Tabs defaultValue="login" className="w-[400px]">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[400px]">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="login">Login</TabsTrigger>
                     <TabsTrigger value="signup">Sign Up</TabsTrigger>

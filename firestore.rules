@@ -14,19 +14,40 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
+    // Helper function to check if the user is an admin by looking at their user document
+    function isAdmin() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
     // Rules for the 'users' collection
     match /users/{userId} {
-      // Allow users to read their own data
-      allow read: if isAuthenticated() && isOwner(userId);
-      // Allow users to create their own account data
+      // Admins can read any user document.
+      // Authenticated users can read their own document.
+      allow read: if isAuthenticated() && (isAdmin() || isOwner(userId));
+      
+      // Admins can get a list of all users.
+      allow list: if isAuthenticated() && isAdmin();
+
+      // Any authenticated user can create their own user document.
       allow create: if isAuthenticated() && isOwner(userId);
-      // Disallow updating or deleting user profiles for now
-      allow update, delete: if false;
+      
+      // Admins can update any user's data.
+      // A non-admin user can only update their own data and cannot make themselves an admin.
+      allow update: if isAuthenticated() && (isAdmin() || (isOwner(userId) && request.resource.data.isAdmin == resource.data.isAdmin));
+
+      // Deleting user accounts is not permitted through the client.
+      allow delete: if false;
+    }
+
+    // The following collections are publicly readable, but only writable by admins.
+    match /(about|certificates|certificates-section|contact-info|contact-section|gallery|home|partners|products|products-section|seo|social-links|terms|testimonials|testimonials-section)/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
     }
     
-    // Lock down all other collections to only allow authenticated users
-    match /{collection}/{document=**} {
-        allow read, write: if isAuthenticated();
+    // The 'submissions' collection is private and only accessible by admins.
+    match /submissions/{submissionId} {
+        allow read, write: if isAuthenticated() && isAdmin();
     }
   }
 }

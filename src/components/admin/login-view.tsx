@@ -1,69 +1,97 @@
+
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "@/lib/auth"; 
+import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Lock } from "lucide-react";
 
-interface LoginViewProps {
-    onLoginSuccess: () => void;
-}
+export function AdminLoginView() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { isAdmin, loading } = useAuth(); 
+  const router = useRouter();
+  const { toast } = useToast();
 
-export function LoginView({ onLoginSuccess }: LoginViewProps) {
-    const [password, setPassword] = useState("");
-    const { toast } = useToast();
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (password === 'sbs') { // Simple hardcoded password for now
-            onLoginSuccess();
-            toast({
-                title: "Access Granted",
-                description: "Welcome to the admin panel.",
-            });
-        } else {
-            toast({
-                title: "Access Denied",
-                description: "Incorrect password.",
-                variant: "destructive",
-            });
-        }
-    };
+    const { success, error } = await signIn(email, password);
 
-    return (
-        <div className="flex min-h-screen w-full flex-col bg-background">
-            <div className="flex flex-1 items-center justify-center p-4">
-                <Card className="mx-auto w-full max-w-sm">
-                    <CardHeader className="space-y-1">
-                        <CardTitle className="text-2xl font-bold">Admin Access</CardTitle>
-                        <CardDescription>Enter the password to access the dashboard</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={handleLogin} className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="password">Password</Label>
-                                <div className="relative">
-                                    <Lock className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                        id="password"
-                                        type="password"
-                                        placeholder="Enter password"
-                                        className="pl-9"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            <Button type="submit" className="w-full">
-                                Login
-                            </Button>
-                        </form>
-                    </CardContent>
-                </Card>
-            </div>
+    if (success) {
+      // Auth state will update via useAuth hook. 
+      // The parent page /admin/login/page.tsx will handle the redirect.
+      // We just need to wait for the isAdmin flag to be confirmed.
+      // No immediate redirect here.
+      toast({ title: "Login Successful", description: "Verifying admin status..." });
+    } else {
+      toast({ title: "Login Failed", description: error, variant: "destructive" });
+      setIsLoading(false);
+    }
+  };
+  
+  // This view is shown when a user is logged in, but the isAdmin flag is false.
+  if (!loading && !isAdmin) {
+     return (
+        <div className="flex items-center justify-center min-h-screen bg-background">
+             <Card className="w-[400px]">
+                 <CardHeader>
+                     <CardTitle>Access Denied</CardTitle>
+                     <CardDescription>You do not have permission to access the admin panel. Please contact an administrator if you believe this is a mistake.</CardDescription>
+                 </CardHeader>
+                 <CardContent>
+                     <Button onClick={() => router.push("/")} className="w-full">Go to Homepage</Button>
+                 </CardContent>
+            </Card>
         </div>
-    );
+     )
+  }
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <Card className="w-[400px]">
+        <CardHeader>
+          <CardTitle className="text-2xl">Admin Panel Login</CardTitle>
+          <CardDescription>Enter your administrator credentials to continue</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleLogin} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

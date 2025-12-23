@@ -8,7 +8,7 @@ import {
     onAuthStateChanged,
     User
 } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDocs, collection } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDocs, collection, getDoc, updateDoc } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -21,9 +21,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
-const db = getFirestore(app);
+export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
 // Sign up function
 export const signUp = async (email, password) => {
@@ -34,6 +34,7 @@ export const signUp = async (email, password) => {
         await setDoc(doc(db, "users", user.uid), {
             email: user.email,
             createdAt: new Date().toISOString(),
+            isAdmin: false, // Default isAdmin to false
         });
         return { success: true, user };
     } catch (error) {
@@ -54,6 +55,7 @@ export const signIn = async (email, password) => {
 // Sign out function
 export const logOut = async () => {
     try {
+        // This function signs the user out of the Firebase client-side session
         await signOut(auth);
         return { success: true };
     } catch (error) {
@@ -70,6 +72,17 @@ export interface AppUser {
     id: string;
     email: string;
     createdAt: string;
+    isAdmin?: boolean;
+}
+
+// Function to get a user's profile
+export const getUserProfile = async (userId: string): Promise<AppUser | null> => {
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    if (userDoc.exists()) {
+        return { id: userDoc.id, ...userDoc.data() } as AppUser;
+    }
+    return null;
 }
 
 // Function to get all users (for admin panel)
@@ -81,3 +94,9 @@ export async function getUsers(): Promise<AppUser[]> {
     });
     return users;
 }
+
+// Function to update a user's admin status
+export const updateUserAdminStatus = async (userId: string, isAdmin: boolean) => {
+    const userDocRef = doc(db, "users", userId);
+    await updateDoc(userDocRef, { isAdmin });
+};
