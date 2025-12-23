@@ -10,7 +10,9 @@ import { RiceBowl } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { getHomeContent, HomeContent } from "@/lib/home";
 import Image from "next/image";
-
+import { onAuthChange, logOut, User as FirebaseUser } from "@/lib/auth";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 const sections = [
   { name: "Home", href: "/" },
@@ -20,12 +22,13 @@ const sections = [
   { name: "Contact", href: "/contact" },
 ];
 
-
-
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,8 +38,23 @@ export function Header() {
 
     getHomeContent().then(setHomeContent);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    const unsubscribe = onAuthChange(setUser);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      unsubscribe();
+    };
   }, []);
+
+  const handleLogout = async () => {
+    const { success, error } = await logOut();
+    if (success) {
+      toast({ title: "Logged Out", description: "You have been successfully logged out." });
+      router.push("/");
+    } else {
+      toast({ title: "Logout Failed", description: error, variant: "destructive" });
+    }
+  };
 
   return (
     <header
@@ -80,8 +98,16 @@ export function Header() {
               {section.name}
             </Link>
           ))}
-
-
+          {user ? (
+            <Button variant="outline" onClick={handleLogout}>Logout</Button>
+          ) : (
+            <>
+              <Link href="/login" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Login</Link>
+              <Link href="/signup">
+                <Button variant="default">Sign Up</Button>
+              </Link>
+            </>
+          )}
         </nav>
 
         <div className="flex items-center justify-end md:hidden flex-shrink-0">
@@ -127,9 +153,25 @@ export function Header() {
                       {section.name}
                     </Link>
                   ))}
-
-
                 </nav>
+
+                <div className="mt-auto border-t pt-4">
+                  {user ? (
+                     <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">{user.email}</span>
+                        <Button variant="outline" size="sm" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>Logout</Button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-4">
+                        <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Button variant="outline" className="w-full">Login</Button>
+                        </Link>
+                        <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Button variant="default" className="w-full">Sign Up</Button>
+                        </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             </SheetContent>
           </Sheet>

@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LoginView } from "@/components/admin/login-view";
+import { LoginView } from "@/components/auth/login-view";
 
 // Import new Tab components
 import { HomeTab } from "@/components/admin/tabs/home-tab";
@@ -19,6 +19,7 @@ import { PartnersTab } from "@/components/admin/tabs/partners-tab";
 import { ContactTab } from "@/components/admin/tabs/contact-tab";
 import { InquiriesTab } from "@/components/admin/tabs/inquiries-tab";
 import { OrdersTab } from "@/components/admin/tabs/orders-tab";
+import { UsersTab } from "@/components/admin/tabs/users-tab";
 import { SocialTab } from "@/components/admin/tabs/social-tab";
 import { LegalTab } from "@/components/admin/tabs/legal-tab";
 import { SeoTab } from "@/components/admin/tabs/seo-tab";
@@ -49,6 +50,7 @@ export default function AdminPage() {
                 <TabsTrigger value="contact">Contact</TabsTrigger>
                 <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
                 <TabsTrigger value="orders">Orders</TabsTrigger>
+                <TabsTrigger value="users">Users</TabsTrigger>
                 <TabsTrigger value="social">Social Media</TabsTrigger>
                 <TabsTrigger value="legal">Legal</TabsTrigger>
                 <TabsTrigger value="seo">SEO</TabsTrigger>
@@ -94,6 +96,10 @@ export default function AdminPage() {
 
             <TabsContent value="orders">
               <OrdersTab />
+            </TabsContent>
+
+            <TabsContent value="users">
+              <UsersTab />
             </TabsContent>
 
             <TabsContent value="social">
