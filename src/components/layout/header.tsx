@@ -101,12 +101,9 @@ export function Header() {
           {user ? (
             <Button variant="outline" onClick={handleLogout}>Logout</Button>
           ) : (
-            <>
-              <Link href="/login" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Login</Link>
-              <Link href="/signup">
-                <Button variant="default">Sign Up</Button>
-              </Link>
-            </>
+            <Link href="/auth">
+              <Button variant="default">Login / Sign Up</Button>
+            </Link>
           )}
         </nav>
 
@@ -162,14 +159,9 @@ export function Header() {
                         <Button variant="outline" size="sm" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>Logout</Button>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 gap-4">
-                        <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                            <Button variant="outline" className="w-full">Login</Button>
-                        </Link>
-                        <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
-                            <Button variant="default" className="w-full">Sign Up</Button>
-                        </Link>
-                    </div>
+                    <Link href="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Button variant="default" className="w-full">Login / Sign Up</Button>
+                    </Link>
                   )}
                 </div>
               </div>

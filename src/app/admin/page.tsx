@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LoginView } from "@/components/auth/login-view";
+import { AuthView } from "@/components/auth/auth-view";
 
 // Import new Tab components
 import { HomeTab } from "@/components/admin/tabs/home-tab";
@@ -29,7 +29,7 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   if (!isAuthenticated) {
-    return <LoginView onLoginSuccess={() => setIsAuthenticated(true)} />;
+    return <AuthView onLoginSuccess={() => setIsAuthenticated(true)} />;
   }
 
   return (

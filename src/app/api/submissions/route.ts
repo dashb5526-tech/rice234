@@ -1,41 +1,37 @@
 
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { saveSubmission, getInquiries, getOrders } from '@/lib/submissions';
 
-const submissionsFilePath = path.join(process.cwd(), 'src/lib/data/submissions.json');
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const type = searchParams.get('type');
 
-async function getSubmissionsData() {
-    try {
-        const data = await fs.readFile(submissionsFilePath, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        // If the file doesn't exist, create it with an empty array
-        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-            await fs.writeFile(submissionsFilePath, JSON.stringify([], null, 2));
-            return [];
-        }
-        return [];
-    }
-}
-
-export async function GET() {
   try {
-    const data = await getSubmissionsData();
+    let data;
+    if (type === 'order') {
+      data = await getOrders();
+    } else {
+      data = await getInquiries();
+    }
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error reading submissions file:', error);
-    return NextResponse.json([], { status: 500 });
+    console.error('Error fetching submissions:', error);
+    return NextResponse.json({ error: 'Failed to fetch submissions' }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const submissions = await request.json();
-    await fs.writeFile(submissionsFilePath, JSON.stringify(submissions, null, 2));
-    return NextResponse.json({ success: true });
+    const submissionData = await request.json();
+    const result = await saveSubmission(submissionData);
+
+    if (result.success) {
+      return NextResponse.json({ success: true, message: result.message, id: result.id });
+    } else {
+      return NextResponse.json({ error: result.message }, { status: 500 });
+    }
   } catch (error) {
-    console.error('Error saving submissions file:', error);
-    return NextResponse.json({ error: 'Failed to save' }, { status: 500 });
+    console.error('Error saving submission:', error);
+    return NextResponse.json({ error: 'Failed to save submission' }, { status: 500 });
   }
 }

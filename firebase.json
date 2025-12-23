@@ -1,8 +1,5 @@
 {
   "firestore": {
-    "database": "(default)",
-    "location": "asia-south1",
-    "rules": "jesion",
-    "indexes": "index"
+    "rules": "firestore.rules.new"
   }
 }
