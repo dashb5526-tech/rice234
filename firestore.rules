@@ -4,50 +4,95 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper function to check if a user is authenticated
     function isAuthenticated() {
       return request.auth != null;
     }
 
-    // Helper function to check if a user is the owner of a document
     function isOwner(userId) {
       return request.auth.uid == userId;
     }
 
-    // Helper function to check if the user is an admin by looking at their user document
     function isAdmin() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
 
-    // Rules for the 'users' collection
     match /users/{userId} {
-      // Admins can read any user document.
-      // Authenticated users can read their own document.
       allow read: if isAuthenticated() && (isAdmin() || isOwner(userId));
-      
-      // Admins can get a list of all users.
       allow list: if isAuthenticated() && isAdmin();
-
-      // Any authenticated user can create their own user document.
-      allow create: if isAuthenticated() && isOwner(userId);
-      
-      // Admins can update any user's data.
-      // A non-admin user can only update their own data and cannot make themselves an admin.
+      allow create: if isOwner(userId);
       allow update: if isAuthenticated() && (isAdmin() || (isOwner(userId) && request.resource.data.isAdmin == resource.data.isAdmin));
-
-      // Deleting user accounts is not permitted through the client.
       allow delete: if false;
     }
 
-    // The following collections are publicly readable, but only writable by admins.
-    match /(about|certificates|certificates-section|contact-info|contact-section|gallery|home|partners|products|products-section|seo|social-links|terms|testimonials|testimonials-section)/{docId} {
+    match /about/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /certificates/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /certificates-section/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /contact-info/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /contact-section/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /gallery/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /home/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /partners/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /products/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /products-section/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /seo/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /social-links/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /terms/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /testimonials/{docId} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isAdmin();
+    }
+    match /testimonials-section/{docId} {
         allow read: if true;
         allow write: if isAuthenticated() && isAdmin();
     }
     
-    // The 'submissions' collection is private and only accessible by admins.
     match /submissions/{submissionId} {
-        allow read, write: if isAuthenticated() && isAdmin();
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated() && isAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated() && isAdmin();
     }
   }
 }

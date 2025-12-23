@@ -90,7 +90,7 @@ export function Footer() {
                     <RiceBowl className="h-8 w-8 text-primary" />
                 )}
                 <span className="font-headline text-2xl font-semibold">
-                  {homeContent?.brand.name || "Dash Rice Traders"}
+                  {homeContent?.brand.name || "Bhawani Shankar Rice Trader"}
                 </span>
               </Link>
                <p className="mt-4 text-sm text-muted-foreground">
@@ -144,7 +144,7 @@ export function Footer() {
             </div>
           </div>
           <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} {homeContent?.brand.name || "Dash Rice Traders"}. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} {homeContent?.brand.name || "Bhawani Shankar Rice Trader"}. All rights reserved.</p>
           </div>
         </div>
       </footer>

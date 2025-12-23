@@ -36,7 +36,7 @@ export function ProductDetailPageClient({ product }: { product: Product }) {
     url: productUrl,
     brand: {
       '@type': 'Brand',
-      name: homeContent?.brand.name || 'Dash Rice Traders',
+      name: homeContent?.brand.name || 'Bhawani Shankar Rice Trader',
     },
     sku: product.imageId,
   };

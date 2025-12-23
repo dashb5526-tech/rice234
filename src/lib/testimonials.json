@@ -1,26 +1,26 @@
 [
-  {
-    "id": "testimonial-1",
-    "name": "Priya Sharma",
-    "title": "Owner, Spice Route Restaurant",
-    "quote": "Dash Rice Traders has been our most reliable supplier. Their Basmati rice is exceptional and our customers love it. Consistently high quality and always on time.",
-    "rating": 5,
-    "authorImageUrl": "/uploads/1760781291697_IMG-20250929-WA0004.jpg"
-  },
-  {
-    "id": "testimonial-2",
-    "quote": "We switched to Dash Rice for our hotel chain's bulk needs and couldn't be happier. The pricing is competitive, and the quality of their Sona Masoori is unmatched.",
-    "name": "Rajesh Kumar",
-    "title": "Procurement Manager, Grand Hotels Group",
-    "rating": 5,
-    "authorImageUrl": "https://picsum.photos/seed/rajesh/100/100"
-  },
-  {
-    "id": "testimonial-3",
-    "quote": "As a retailer, freshness and purity are key. Dash Rice delivers on both fronts. Their direct farm sourcing makes a noticeable difference. Highly recommended!",
-    "name": "Anita Desai",
-    "title": "Proprietor, Fresh Mart",
-    "rating": 5,
-    "authorImageUrl": "https://picsum.photos/seed/anita/100/100"
-  }
+    {
+        "id": "testimonial-1",
+        "name": "Priya Sharma",
+        "title": "Owner, Spice Route",
+        "quote": "\"Bhawani Shankar Rice consistently delivers the premium quality rice essential for Spice Route's diverse culinary creations. Their commitment to excellence and reliable service makes them an invaluable partner.\" - Priya Sharma, Owner, Spice Route",
+        "rating": 5,
+        "authorImageUrl": "/uploads/1760781291697_IMG-20250929-WA0004.jpg"
+    },
+    {
+        "id": "testimonial-2",
+        "name": "Rajesh Kumar",
+        "title": "Procurement Manager, Grand Hotels Group",
+        "quote": "Discover why industry expert Rajesh Kumar, with his discerning eye for quality, consistently chooses Bhawani Shankar Rice. His powerful testimonial reflects our unwavering commitment to excellence and customer satisfaction.",
+        "rating": 5,
+        "authorImageUrl": "https://picsum.photos/seed/rajesh/100/100"
+    },
+    {
+        "id": "testimonial-3",
+        "name": "Anita Desai",
+        "title": "Proprietor, Fresh Mart",
+        "quote": "As a retailer, freshness and purity are key. Bhawani Shankar Rice delivers on both fronts. Their direct farm sourcing makes a noticeable difference. Highly recommended!",
+        "rating": 4,
+        "authorImageUrl": "https://picsum.photos/seed/anita/100/100"
+    }
 ]

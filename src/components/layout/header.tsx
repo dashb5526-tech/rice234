@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
 import { RiceBowl } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { getHomeContent, HomeContent } from "@/lib/home";
+import { HomeContent } from "@/lib/home";
 import Image from "next/image";
-import { onAuthChange, logOut, User as FirebaseUser } from "@/lib/auth";
+import { logOut } from "@/lib/auth";
+import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
@@ -22,11 +23,10 @@ const sections = [
   { name: "Contact", href: "/contact" },
 ];
 
-export function Header() {
+export function Header({ homeContent }: { homeContent: HomeContent | null }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const { user } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -36,13 +36,8 @@ export function Header() {
     };
     window.addEventListener("scroll", handleScroll);
 
-    getHomeContent().then(setHomeContent);
-
-    const unsubscribe = onAuthChange(setUser);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      unsubscribe();
     };
   }, []);
 
@@ -79,10 +74,10 @@ export function Header() {
             <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background w-full h-full z-10 pointer-events-none md:from-transparent" />
             <div className="w-full whitespace-nowrap marquee">
               <span className="font-headline text-xl font-bold text-foreground sm:text-2xl mr-4">
-                {homeContent?.brand.name || "Dash Rice"}
+                {homeContent?.brand.name || "Bhawani Shankar Rice"}
               </span>
               <span className="font-headline text-xl font-bold text-foreground sm:text-2xl mr-4" aria-hidden="true">
-                {homeContent?.brand.name || "Dash Rice"}
+                {homeContent?.brand.name || "Bhawani Shankar Rice"}
               </span>
             </div>
           </div>
@@ -119,7 +114,7 @@ export function Header() {
               <SheetHeader className="sr-only">
                 <SheetTitle>Mobile Menu</SheetTitle>
                 <SheetDescription>
-                  Navigation links for the Dash Rice Traders website.
+                  Navigation links for the Bhawani Shankar Rice Trader website.
                 </SheetDescription>
               </SheetHeader>
               <div className="flex h-full flex-col">
@@ -131,7 +126,7 @@ export function Header() {
                       <RiceBowl className="h-8 w-8 text-primary" />
                     )}
                     <span className="font-headline text-xl font-bold text-foreground">
-                      {homeContent?.brand.name || "Dash Rice Traders"}
+                      {homeContent?.brand.name || "Bhawani Shankar Rice Trader"}
                     </span>
                   </Link>
                   <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>

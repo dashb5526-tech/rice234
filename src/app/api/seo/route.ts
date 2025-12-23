@@ -10,7 +10,7 @@ async function getSeoData() {
         return JSON.parse(data);
     } catch (error) {
         return {
-            title: "Dash Rice Traders",
+            title: "Bhawani Shankar Rice Trader",
             description: "A trusted rice trading and distribution company providing high-quality rice varieties.",
             keywords: "rice, basmati, sona masoori, parboiled, wholesale, export, trading, distribution"
         };

@@ -16,8 +16,6 @@ import { signIn, signUp } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 
 interface AuthViewProps {
     onLoginSuccess?: () => void;
@@ -49,27 +47,27 @@ export function AuthView({ onLoginSuccess }: AuthViewProps) {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        // The signUp function from @/lib/auth already handles user creation in firestore
-        const { success, user, error } = await signUp(signupEmail, signupPassword);
-        if (success && user) {
-             // Create a document in the 'users' collection
-            await setDoc(doc(db, "users", user.uid), {
-                email: user.email,
-                isAdmin: false, // Default isAdmin to false
-            });
-
-            toast({ title: "Signup Successful", description: "Your account has been created. You can now log in." });
-            // Switch to login tab after successful signup
-            setLoginEmail(signupEmail); // pre-fill email
-            setLoginPassword("");
-            setSignupEmail("");
-            setSignupPassword("");
-            setActiveTab("login");
-
+        const { success, error } = await signUp(signupEmail, signupPassword);
+        if (success) {
+            // Automatically sign in the user after successful sign-up
+            const { success: signInSuccess, error: signInError } = await signIn(signupEmail, signupPassword);
+            if (signInSuccess) {
+                toast({ title: "Signup Successful", description: "Welcome! Your account has been created." });
+                if (onLoginSuccess) {
+                    onLoginSuccess();
+                } else {
+                    router.push("/");
+                }
+            } else {
+                // If automatic sign-in fails, notify the user to log in manually.
+                toast({ title: "Account Created", description: "Please log in to continue.", variant: "destructive" });
+                setActiveTab("login"); // Switch to login tab
+            }
         } else {
             toast({ title: "Signup Failed", description: error, variant: "destructive" });
         }
     };
+
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-background">
