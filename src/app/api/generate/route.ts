@@ -1,10 +1,14 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-const GEMINI_API_KEY = 'AIzaSyCZ2qQCLgvUO5C5pUOYHHLHFkL-dqCF4i0';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 export async function POST(req: NextRequest) {
+  if (!GEMINI_API_KEY) {
+    return NextResponse.json({ error: 'Gemini API key is not configured' }, { status: 500 });
+  }
+
   try {
     const { prompt } = await req.json();
 

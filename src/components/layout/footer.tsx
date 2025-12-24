@@ -94,7 +94,7 @@ export function Footer() {
                         </p>
                         <div className="flex space-x-4 pt-2">
                             {socialLinks.map(link => (
-                                <SocialIcon key={link.id} platform={link.platform} url={link.url} />
+                                <SocialIcon key={link.id} platform={link.name} url={link.url} />
                             ))}
                         </div>
                     </div>

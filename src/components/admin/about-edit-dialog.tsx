@@ -117,8 +117,12 @@ export function AboutEditDialog({ isOpen, setIsOpen, content, onSave }: AboutEdi
         }));
         toast({ title: 'AI Content Generated' });
       }
-    } catch (error) {
-      toast({ title: 'AI Generation Failed', variant: 'destructive' });
+    } catch (error: any) {
+        toast({
+            title: 'AI Generation Failed',
+            description: error.message || 'An unknown error occurred.',
+            variant: 'destructive',
+        });
     } finally {
       setIsGenerating(false);
     }

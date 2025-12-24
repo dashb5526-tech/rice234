@@ -93,8 +93,8 @@ export function Footer() {
                            {homeContent?.brand?.footerDescription || "Providing the highest quality rice since 1950. We are committed to excellence from our fields to your table."}
                         </p>
                         <div className="flex space-x-4 pt-2">
-                            {socialLinks.map(link => (
-                                <SocialIcon key={link.id} platform={link.name} url={link.url} />
+                            {socialLinks.filter(link => link.name).map(link => (
+                                <SocialIcon key={link.id} platform={link.name!} url={link.url} />
                             ))}
                         </div>
                     </div>
