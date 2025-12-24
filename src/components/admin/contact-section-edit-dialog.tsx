@@ -14,11 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Sparkles, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ContactSection } from "@/lib/contact-section";
-import { generateContent } from "@/lib/ai-dummy";
-import { AiPromptDialog } from "./ai-prompt-dialog";
 
 interface ContactSectionEditDialogProps {
     isOpen: boolean;
@@ -29,8 +27,6 @@ interface ContactSectionEditDialogProps {
 
 export function ContactSectionEditDialog({ isOpen, setIsOpen, content, onSave }: ContactSectionEditDialogProps) {
     const [currentContent, setCurrentContent] = useState<ContactSection>(content);
-    const [isAiPromptOpen, setIsAiPromptOpen] = useState(false);
-    const [isGenerating, setIsGenerating] = useState(false);
     const { toast } = useToast();
 
     useEffect(() => {
@@ -44,22 +40,6 @@ export function ContactSectionEditDialog({ isOpen, setIsOpen, content, onSave }:
             ...prev,
             [field]: value
         }));
-    };
-
-    const handleAiGenerate = async (promptText: string) => {
-        setIsGenerating(true);
-        setIsAiPromptOpen(false);
-        try {
-            const result = await generateContent({ topic: "contact us section", prompt: promptText });
-            if (result) {
-                setCurrentContent(result);
-                toast({ title: "AI Content Generated" });
-            }
-        } catch (error) {
-            toast({ title: "AI Generation Failed", variant: "destructive" });
-        } finally {
-            setIsGenerating(false);
-        }
     };
 
     const handleSubmit = () => {
@@ -83,12 +63,6 @@ export function ContactSectionEditDialog({ isOpen, setIsOpen, content, onSave }:
                         </DialogClose>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
-                        <div className="flex justify-end">
-                            <Button variant="outline" size="sm" onClick={() => setIsAiPromptOpen(true)}>
-                                <Sparkles className="mr-2 h-4 w-4" />
-                                AI Generate
-                            </Button>
-                        </div>
                         <div className="space-y-2">
                             <Label htmlFor="contact-title">Title</Label>
                             <Input id="contact-title" value={currentContent.title} onChange={(e) => handleContentChange('title', e.target.value)} />
@@ -103,7 +77,6 @@ export function ContactSectionEditDialog({ isOpen, setIsOpen, content, onSave }:
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-            <AiPromptDialog isOpen={isAiPromptOpen} setIsOpen={setIsAiPromptOpen} onGenerate={handleAiGenerate} isGenerating={isGenerating} />
         </>
     );
 }

@@ -2,7 +2,7 @@
 "use server";
 
 import * as z from "zod";
-import { saveSubmission } from '@/lib/submissions';
+import { saveSubmission } from './submissions';
 
 const contactSchema = z.object({
   type: z.literal("contact"),

@@ -1,32 +1,24 @@
-import type { ContactSection } from '@/lib/types';
-import contactSectionData from '@/lib/data/contact-section.json';
+import contactSectionData from "./data/contact-section.json";
 
-export type { ContactSection };
-
-function getBaseUrl() {
-    if (typeof window !== 'undefined') return '';
-    if (process.env.NEXT_PUBLIC_VERCEL_URL) return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    return 'http://localhost:9002';
+export interface ContactContent {
+    title: string;
+    description: string;
+    address: string;
+    phone: string;
+    email: string;
 }
 
-export async function getContactSection(): Promise<ContactSection> {
-    try {
-        const baseUrl = getBaseUrl();
-        const response = await fetch(`${baseUrl}/api/contact-section`);
-        if (!response.ok) {
-            return contactSectionData;
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching contact section content, falling back to local data', error);
-        return contactSectionData;
-    }
-}
+export const getContactSectionContent = async (): Promise<ContactContent> => {
+    return Promise.resolve(contactSectionData as ContactContent);
+};
 
-export async function saveContactSection(content: ContactSection): Promise<void> {
-    await fetch('/api/contact-section', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(content),
-    });
-}
+export const getContactSection = async (): Promise<ContactContent> => {
+    return Promise.resolve(contactSectionData as ContactContent);
+};
+
+export const saveContactSection = async (content: ContactContent): Promise<void> => {
+    // In a real application, you would save the content to a database or file.
+    // For this example, we'll just log it to the console.
+    console.log("Saving contact section content:", content);
+    return Promise.resolve();
+};

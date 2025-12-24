@@ -1,4 +1,3 @@
-
 "use client";
 
 import { getContactInfo, ContactInfo } from "@/lib/contact-info";
@@ -23,6 +22,7 @@ const SocialIcon = ({ platform, url }: { platform: string, url: string }) => {
         case "instagram":
             icon = <Instagram {...iconProps} />;
             break;
+        case "x":
         case "twitter":
             icon = <Twitter {...iconProps} />;
             break;
@@ -94,7 +94,7 @@ export function Footer() {
                         </p>
                         <div className="flex space-x-4 pt-2">
                             {socialLinks.map(link => (
-                                <SocialIcon key={link.id} platform={link.platform} url={link.url} />
+                                <SocialIcon key={link.id} platform={link.name} url={link.url} />
                             ))}
                         </div>
                     </div>
@@ -146,9 +146,9 @@ export function Footer() {
                     <p>&copy; {new Date().getFullYear()} {homeContent?.brand?.name || "Rice Bowl"}. All Rights Reserved.</p>
                      {termsContent && (
                         <p className="mt-2">
-                            <Link href={termsContent.termsUrl} className="hover:text-primary transition-colors">Terms of Service</Link>
+                            <Link href="/terms-and-conditions" className="hover:text-primary transition-colors">Terms of Service</Link>
                             <span className="mx-2">|</span>
-                            <Link href={termsContent.privacyUrl} className="hover:text-primary transition-colors">Privacy Policy</Link>
+                            <Link href="/terms-and-conditions" className="hover:text-primary transition-colors">Privacy Policy</Link>
                         </p>
                     )}
                 </div>

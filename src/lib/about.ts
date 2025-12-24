@@ -1,34 +1,37 @@
-import type { AboutContent, Service } from '@/lib/types';
-import aboutData from '@/lib/data/about.json';
+import aboutData from "./data/about.json";
 
-export type { AboutContent, Service };
-
-
-function getBaseUrl() {
-    if (typeof window !== 'undefined') return '';
-    if (process.env.NEXT_PUBLIC_VERCEL_URL) return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    return 'http://localhost:9002';
+export interface ServiceItem {
+    id: string;
+    title: string;
+    description: string;
 }
 
-export async function getAboutContent(): Promise<AboutContent> {
-    try {
-        const baseUrl = getBaseUrl();
-        const response = await fetch(`${baseUrl}/api/about`);
-        if (!response.ok) {
-            console.error("API fetch failed, falling back to local import.");
-            return aboutData as AboutContent;
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching about content from API, falling back to local import:', error);
-        return aboutData as AboutContent;
-    }
+export interface AboutContent {
+    main: {
+        title: string;
+        paragraph1: string;
+        paragraph2: string;
+        imageUrl: string;
+        imageHint: string;
+    };
+    services: {
+        title: string;
+        items: ServiceItem[];
+    };
+    seo: {
+        title: string;
+        description: string;
+        keywords: string;
+    };
 }
 
-export async function saveAboutContent(content: AboutContent): Promise<void> {
-    await fetch('/api/about', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(content),
-    });
-}
+export const getAboutContent = async (): Promise<AboutContent> => {
+    return Promise.resolve(aboutData as AboutContent);
+};
+
+export const saveAboutContent = async (content: AboutContent): Promise<void> => {
+    // In a real application, you would save the content to a database or file.
+    // For this example, we'll just log it to the console.
+    console.log("Saving about content:", content);
+    return Promise.resolve();
+};

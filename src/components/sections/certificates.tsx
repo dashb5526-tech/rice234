@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogClose, DialogTitle } from '@/components/ui/dialog';
 import { useEffect, useRef, useState, WheelEvent } from 'react';
 import { getCertificates, Certificate } from '@/lib/certificates';
-import { getCertificatesSection, CertificatesSection } from '@/lib/certificates-section';
+import { getCertificatesSectionContent, CertificatesSectionContent } from '@/lib/certificates-section';
 import Autoplay from "embla-carousel-autoplay";
 import { X, ZoomIn, ZoomOut } from "lucide-react";
 
@@ -214,7 +214,7 @@ function CertificateLightbox({
 
 export function Certificates() {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
-  const [sectionContent, setSectionContent] = useState<CertificatesSection | null>(null);
+  const [sectionContent, setSectionContent] = useState<CertificatesSectionContent | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{url: string, name: string} | null>(null);
   
@@ -224,7 +224,7 @@ export function Certificates() {
 
   useEffect(() => {
     getCertificates().then(setCertificates);
-    getCertificatesSection().then(setSectionContent);
+    getCertificatesSectionContent().then(setSectionContent);
   }, []);
   
   const openLightbox = (cert: Certificate) => {

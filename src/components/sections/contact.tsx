@@ -30,7 +30,7 @@ import { Phone, Mail, MapPin } from "lucide-react";
 import { submitForm } from "@/lib/actions";
 import { getProducts, Product } from "@/lib/products";
 import { getContactInfo, ContactInfo } from "@/lib/contact-info";
-import { getContactSection, ContactSection } from "@/lib/contact-section";
+import { getContactSectionContent, ContactSectionContent } from "@/lib/contact-section";
 import { useEffect, useState } from "react";
 
 const contactFormSchema = z.object({
@@ -46,19 +46,19 @@ const orderFormSchema = z.object({
   phone: z.string().min(10, "Please enter a valid phone number."),
   email: z.string().email("Please enter a valid email address."),
   riceType: z.string({ required_error: "Please select a rice type." }),
-  quantity: z.string().regex(/^[1-9]\d*$/, "Please enter a valid quantity."),
+  quantity: z.string().regex(/^[1-9]\\d*$/, "Please enter a valid quantity."),
   message: z.string().optional(),
 });
 
 export function Contact() {
   const [products, setProducts] = useState<Product[]>([]);
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
-  const [sectionContent, setSectionContent] = useState<ContactSection | null>(null);
+  const [sectionContent, setSectionContent] = useState<ContactSectionContent | null>(null);
 
   useEffect(() => {
     getProducts().then(setProducts);
     getContactInfo().then(setContactInfo);
-    getContactSection().then(setSectionContent);
+    getContactSectionContent().then(setSectionContent);
   }, []);
 
   const contactForm = useForm<z.infer<typeof contactFormSchema>>({

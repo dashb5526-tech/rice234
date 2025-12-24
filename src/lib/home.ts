@@ -1,33 +1,38 @@
-import type { HomeContent } from '@/lib/types';
-import homeData from '@/lib/data/home.json';
+import homeData from "./data/home.json";
 
-export type { HomeContent };
-
-function getBaseUrl() {
-    if (typeof window !== 'undefined') return '';
-    if (process.env.NEXT_PUBLIC_VERCEL_URL) return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    return 'http://localhost:9002';
+export interface HeroContent {
+    headline: string;
+    subheadline: string;
+    cta?: string;
+    imageUrl: string;
+    imageHint: string;
 }
 
-export async function getHomeContent(): Promise<HomeContent> {
-    try {
-        const baseUrl = getBaseUrl();
-        const response = await fetch(`${baseUrl}/api/home`);
-        if (!response.ok) {
-            console.error("API fetch failed, falling back to local import.");
-            return homeData as HomeContent;
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching home content from API, falling back to local import:', error);
-        return homeData as HomeContent;
-    }
+export interface Brand {
+    name: string;
+    logoUrl: string;
+    footerDescription: string;
 }
 
-export async function saveHomeContent(content: HomeContent): Promise<void> {
-    await fetch('/api/home', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(content),
-    });
+export interface Seo {
+    title: string;
+    description: string;
+    keywords: string;
 }
+
+export interface HomeContent {
+    brand: Brand;
+    hero: HeroContent;
+    seo: Seo;
+}
+
+export const getHomeContent = async (): Promise<HomeContent> => {
+    return Promise.resolve(homeData as HomeContent);
+};
+
+export const saveHomeContent = async (content: HomeContent): Promise<void> => {
+    // In a real application, you would save the content to a database or file.
+    // For this example, we'll just log it to the console.
+    console.log("Saving home content:", content);
+    return Promise.resolve();
+};

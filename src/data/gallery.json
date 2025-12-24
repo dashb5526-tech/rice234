@@ -1,0 +1,24 @@
+{
+  "title": "Our Gallery",
+  "description": "A collection of beautiful images.",
+  "galleryImages": [
+    {
+      "id": "1",
+      "description": "A beautiful landscape.",
+      "imageUrl": "https://example.com/image1.jpg",
+      "imageHint": "Landscape"
+    },
+    {
+      "id": "2",
+      "description": "A stunning cityscape.",
+      "imageUrl": "https://example.com/image2.jpg",
+      "imageHint": "Cityscape"
+    },
+    {
+      "id": "3",
+      "description": "A close-up of a flower.",
+      "imageUrl": "https://example.com/image3.jpg",
+      "imageHint": "Flower"
+    }
+  ]
+}

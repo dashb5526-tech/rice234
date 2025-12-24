@@ -1,0 +1,12 @@
+{
+  "hero": {
+    "headline": "Welcome to Our Website",
+    "subheadline": "Discover amazing products and services.",
+    "cta": "Get Started",
+    "imageUrl": "https://example.com/hero-image.jpg"
+  },
+  "brand": {
+    "name": "Our Brand",
+    "logoUrl": "https://example.com/logo.png"
+  }
+}
