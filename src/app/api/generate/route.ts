@@ -1,14 +1,18 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+
+if (!GEMINI_API_KEY) {
+  throw new Error('Gemini API key is not configured');
+}
+
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 export async function POST(req: NextRequest) {
-  if (!GEMINI_API_KEY) {
-    return NextResponse.json({ error: 'Gemini API key is not configured' }, { status: 500 });
-  }
-
   try {
     const { prompt } = await req.json();
 
@@ -16,44 +20,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const response = await fetch(GEMINI_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt,
-          }],
-        }],
-      }),
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Gemini API request failed:', errorText);
-      return NextResponse.json({ error: `Gemini API request failed: ${errorText}` }, { status: response.status });
-    }
-
-    const data = await response.json();
-    
-    if (data.promptFeedback && data.promptFeedback.blockReason) {
-        return NextResponse.json({ error: `Request was blocked: ${data.promptFeedback.blockReason}` }, { status: 400 });
-    }
-
-    if (!data.candidates || data.candidates.length === 0) {
-      return NextResponse.json({ error: 'No content generated' }, { status: 500 });
-    }
-
-    const generatedText = data.candidates[0].content.parts[0].text;
-    
-    // Attempt to parse the text as JSON, if it fails, return as plain text.
     try {
-        const jsonResponse = JSON.parse(generatedText);
+        const jsonResponse = JSON.parse(text);
         return NextResponse.json(jsonResponse);
     } catch (e) {
-        return NextResponse.json({ text: generatedText });
+        return NextResponse.json({ text });
     }
 
   } catch (error: any) {

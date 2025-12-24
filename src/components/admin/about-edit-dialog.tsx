@@ -103,20 +103,35 @@ export function AboutEditDialog({ isOpen, setIsOpen, content, onSave }: AboutEdi
     setIsGenerating(true);
     setIsAiPromptOpen(false);
     try {
-      const result = await generateAboutContent(prompt);
-      if (result) {
-        setCurrentContent((prev) => ({
-          ...prev,
-          main: {
-            ...prev.main,
-            title: result.title,
-            paragraph1: result.paragraph1,
-            paragraph2: result.paragraph2,
-            imageHint: result.imageHint,
-          },
-        }));
-        toast({ title: 'AI Content Generated' });
-      }
+        const result = await generateAboutContent(prompt);
+        if (result && result.text) {
+            // The result from the API is a JSON object with a 'text' property
+            // which is a stringified JSON. We need to parse it twice.
+            let parsedResult;
+            try {
+                // First parse the 'text' property of the result
+                parsedResult = JSON.parse(result.text);
+            } catch (e) {
+                // If parsing fails, it may not be a JSON string, so we use the text directly.
+                // This part needs to be adjusted based on the actual API response format.
+                // For now, let's assume it should have been a valid JSON.
+                throw new Error("AI returned improperly formatted content.");
+            }
+
+            setCurrentContent((prev) => ({
+                ...prev,
+                main: {
+                    ...prev.main,
+                    title: parsedResult.title || prev.main.title,
+                    paragraph1: parsedResult.paragraph1 || prev.main.paragraph1,
+                    paragraph2: parsedResult.paragraph2 || prev.main.paragraph2,
+                    imageHint: parsedResult.imageHint || prev.main.imageHint,
+                },
+            }));
+            toast({ title: 'AI Content Generated' });
+        } else {
+          throw new Error("No content was generated.")
+        }
     } catch (error: any) {
         toast({
             title: 'AI Generation Failed',
@@ -124,9 +139,10 @@ export function AboutEditDialog({ isOpen, setIsOpen, content, onSave }: AboutEdi
             variant: 'destructive',
         });
     } finally {
-      setIsGenerating(false);
+        setIsGenerating(false);
     }
-  };
+};
+
 
   const handleSubmit = () => {
     onSave(currentContent, selectedFile);
