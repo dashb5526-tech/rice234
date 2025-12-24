@@ -20,7 +20,7 @@ import { useToast } from '@/hooks/use-toast';
 import { PlusCircle, Trash2, X, Sparkles } from 'lucide-react';
 import { Product } from '@/lib/products';
 import { AiPromptDialog } from './ai-prompt-dialog';
-import { generateProductContent } from '@/lib/ai';
+import { generateProductDetails } from '@/lib/ai';
 
 interface ProductEditDialogProps {
   isOpen: boolean;
@@ -130,17 +130,25 @@ export function ProductEditDialog({
     setIsGenerating(true);
     setIsAiPromptOpen(false);
     try {
-      const result = await generateProductContent(prompt);
+      const result = await generateProductDetails(prompt);
       if (result) {
-        setName(result.name);
-        setDescription(result.description);
-        setSeoTitle(result.seoTitle);
-        setSeoDescription(result.seoDescription);
-        setSeoKeywords(result.seoKeywords);
+        setName(result.name || prompt);
+        setDescription(result.description || '');
+        setImageId(result.imageId || '');
+        setSpecifications(result.specifications || []);
+        setVarietiesInput(result.varieties?.join(', ') || '');
+        setCertificationsInput(result.certifications?.join(', ') || '');
+        setSeoTitle(result.seoTitle || '');
+        setSeoDescription(result.seoDescription || '');
+        setSeoKeywords(result.seoKeywords || '');
         toast({ title: 'AI Content Generated' });
       }
-    } catch (error) {
-      toast({ title: 'AI Generation Failed', variant: 'destructive' });
+    } catch (error: any) {
+      toast({
+        title: 'AI Generation Failed',
+        description: error.message || 'An unknown error occurred.',
+        variant: 'destructive'
+      });
     } finally {
       setIsGenerating(false);
     }

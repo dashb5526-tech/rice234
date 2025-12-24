@@ -7,6 +7,28 @@ import { type Product } from './products';
 import { type SeoContent } from './seo';
 import { type Testimonial } from './testimonials';
 
+// Helper function to extract and parse JSON from the AI's response
+const extractJson = (text: string): any => {
+    // Find the start and end of the JSON block
+    const jsonRegex = /```json\n({[\s\S]*?})\n```|({[\s\S]*?})/;
+    const match = text.match(jsonRegex);
+
+    if (!match) {
+        throw new Error("Could not find a valid JSON block in the AI's response.");
+    }
+
+    // The actual JSON string is in either the first or second capturing group
+    const jsonString = match[1] || match[2];
+
+    try {
+        return JSON.parse(jsonString);
+    } catch (error: any) {
+        console.error("Failed to parse JSON:", error);
+        throw new Error(`Invalid JSON format: ${error.message}`);
+    }
+};
+
+
 const callGenerateApi = async (prompt: string): Promise<any> => {
     const response = await fetch('/api/generate', {
         method: 'POST',
@@ -21,7 +43,9 @@ const callGenerateApi = async (prompt: string): Promise<any> => {
         throw new Error(error.error || 'Failed to generate content');
     }
 
-    return response.json();
+    const result = await response.json();
+    // Extract and parse the JSON from the text field
+    return extractJson(result.text);
 };
 
 // A generic content generator for simple title/description pairs
@@ -32,8 +56,7 @@ export async function generateContent(prompt: string): Promise<{ title: string; 
         The output must be a valid JSON object.
         Example: {"title": "A good title", "description": "A compelling description."}
     `;
-    const result = await callGenerateApi(specificPrompt);
-    return result;
+    return callGenerateApi(specificPrompt);
 }
 
 // Generate About Section
@@ -48,8 +71,7 @@ export async function generateAboutContent(prompt: string): Promise<AboutContent
           "imageHint": "string (suggest a relevant Unsplash image ID or a descriptive placeholder like 'team-photo')"
         }
     `;
-    const result = await callGenerateApi(specificPrompt);
-    return result;
+    return callGenerateApi(specificPrompt);
 }
 
 
@@ -63,8 +85,7 @@ export async function generateBrand(prompt: string): Promise<Brand> {
             "logo": "string (suggest a very short, catchy logo text, 2-3 words max)"
         }
     `;
-    const result = await callGenerateApi(specificPrompt);
-    return result;
+    return callGenerateApi(specificPrompt);
 }
 
 // Generate Contact Section
@@ -80,8 +101,7 @@ export async function generateContactSection(prompt: string): Promise<ContactCon
             "email": "string"
         }
     `;
-    const result = await callGenerateApi(specificPrompt);
-    return result;
+    return callGenerateApi(specificPrompt);
 }
 
 // Generate Feature
@@ -95,8 +115,7 @@ export async function generateFeature(prompt: string): Promise<Omit<Feature, 'id
           "icon": "string (suggest a relevant icon name from lucide-react library)"
         }
     `;
-    const result = await callGenerateApi(specificPrompt);
-    return result;
+    return callGenerateApi(specificPrompt);
 }
 
 // Generate Gallery Section
@@ -116,8 +135,7 @@ export async function generateHeroContent(prompt: string): Promise<HeroContent> 
           "imageHint": "string (suggest a relevant Unsplash image ID or a descriptive placeholder like 'hero-rice-field')"
         }
     `;
-    const result = await callGenerateApi(specificPrompt);
-    return result;
+    return callGenerateApi(specificPrompt);
 }
 
 // Generate Product Content
@@ -151,10 +169,10 @@ export async function generateProductDetails(productName: string): Promise<Omit<
             "description": "string (1-2 sentences)",
             "imageId": "string (a slug-style ID, e.g., 'basmati-rice')",
             "specifications": [
-                {"key": "Origin", "value": "string"},
-                {"key": "Grain Length", "value": "string"},
-                {"key": "Aroma", "value": "string"},
-                {"key": "Texture", "value": "string"}
+                {"key": "Grain Type", "value": "string"},
+                {"key": "Average Grain Length", "value": "string"},
+                {"key": "Broken Grains", "value": "string"},
+                {"key": "Moisture Content", "value": "string"}
             ],
             "varieties": ["string", "string"],
             "certifications": ["string", "string"],
@@ -202,6 +220,5 @@ export async function generateTestimonial(prompt: string): Promise<Pick<Testimon
             "rating": "number (integer between 1 and 5)"
         }
     `;
-    const result = await callGenerateApi(specificPrompt);
-    return result;
+    return callGenerateApi(specificPrompt);
 }
