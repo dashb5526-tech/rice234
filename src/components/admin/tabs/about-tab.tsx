@@ -69,7 +69,7 @@ export function AboutTab() {
 
     return (
         <div className="pt-6">
-            <Card>
+            <Card className="mt-4"> {/* Added mt-4 for top margin */}>
                 <CardHeader className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex-1">
                         <CardTitle className="font-headline text-2xl">

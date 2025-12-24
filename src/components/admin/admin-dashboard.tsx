@@ -98,10 +98,9 @@ export function AdminDashboard({ children }: { children?: React.ReactNode }) {
               </SheetContent>
             </Sheet>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          {/* If there are no children, render the default tabs view */}
-          {children || <AdminTabs/>}
-        </div>
+        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+          {children || <AdminTabs />}
+        </main>
       </div>
     </div>
   )

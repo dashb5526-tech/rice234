@@ -15,14 +15,16 @@ import { LegalTab } from "@/components/admin/tabs/legal-tab";
 import { SeoTab } from "@/components/admin/tabs/seo-tab";
 import { InquiriesTab } from "@/components/admin/tabs/inquiries-tab";
 import { UsersTab } from "@/components/admin/tabs/users-tab";
+import { OrdersTab } from "@/components/admin/tabs/orders-tab";
 
 export function AdminTabs() {
   return (
     <Tabs defaultValue="home">
-      <TabsList className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+      <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
         <TabsTrigger value="home">Home</TabsTrigger>
         <TabsTrigger value="about">About</TabsTrigger>
         <TabsTrigger value="products">Products</TabsTrigger>
+        <TabsTrigger value="orders">Orders</TabsTrigger>
         <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
         <TabsTrigger value="gallery">Gallery</TabsTrigger>
         <TabsTrigger value="certificates">Certificates</TabsTrigger>
@@ -34,43 +36,46 @@ export function AdminTabs() {
         <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
         <TabsTrigger value="users">Users</TabsTrigger>
       </TabsList>
-      <TabsContent value="home">
+      <TabsContent value="home" className="mt-6">
         <HomeTab />
       </TabsContent>
-      <TabsContent value="about">
+      <TabsContent value="about" className="mt-6">
         <AboutTab />
       </TabsContent>
-      <TabsContent value="products">
+      <TabsContent value="products" className="mt-6">
         <ProductsTab />
       </TabsContent>
-      <TabsContent value="testimonials">
+      <TabsContent value="orders" className="mt-6">
+        <OrdersTab />
+      </TabsContent>
+      <TabsContent value="testimonials" className="mt-6">
         <TestimonialsTab />
       </TabsContent>
-      <TabsContent value="gallery">
+      <TabsContent value="gallery" className="mt-6">
         <GalleryTab />
       </TabsContent>
-      <TabsContent value="certificates">
+      <TabsContent value="certificates" className="mt-6">
         <CertificatesTab />
       </TabsContent>
-       <TabsContent value="partners">
+       <TabsContent value="partners" className="mt-6">
         <PartnersTab />
       </TabsContent>
-      <TabsContent value="contact">
+      <TabsContent value="contact" className="mt-6">
         <ContactTab />
       </TabsContent>
-      <TabsContent value="social">
+      <TabsContent value="social" className="mt-6">
         <SocialTab />
       </TabsContent>
-      <TabsContent value="legal">
+      <TabsContent value="legal" className="mt-6">
         <LegalTab />
       </TabsContent>
-       <TabsContent value="seo">
+       <TabsContent value="seo" className="mt-6">
         <SeoTab />
       </TabsContent>
-      <TabsContent value="inquiries">
+      <TabsContent value="inquiries" className="mt-6">
         <InquiriesTab />
       </TabsContent>
-      <TabsContent value="users">
+      <TabsContent value="users" className="mt-6">
         <UsersTab />
       </TabsContent>
     </Tabs>
