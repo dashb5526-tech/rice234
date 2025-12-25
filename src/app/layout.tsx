@@ -26,7 +26,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <AuthProvider> {/* Wrap the application with AuthProvider */}
           <Header homeContent={homeContent} />
-          <main className="pt-20">{children}</main>
+          <main>{children}</main>
           <Toaster />
           <Footer />
         </AuthProvider>

@@ -1,35 +1,47 @@
-import { NextRequest, NextResponse } from 'next/server';
+
+import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { z } from 'zod';
 
-const contactInfoFilePath = path.join(process.cwd(), 'src/lib/data/contact-info.json');
+const contactInfoSchema = z.object({
+  address: z.string(),
+  phone: z.string(),
+  email: z.string().email(),
+  imageUrl: z.string().url(),
+  imageHint: z.string(),
+});
 
-async function getContactInfoData() {
-    try {
-        const data = await fs.readFile(contactInfoFilePath, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        return { address: "", phone: "", email: "", whatsappNumber: "" };
-    }
+const dataFilePath = path.join(process.cwd(), 'src/lib/data/contact-info.json');
+
+async function readData() {
+  const fileContents = await fs.readFile(dataFilePath, 'utf8');
+  return JSON.parse(fileContents);
+}
+
+async function writeData(data: any) {
+  await fs.writeFile(dataFilePath, JSON.stringify(data, null, 2));
 }
 
 export async function GET() {
   try {
-    const data = await getContactInfoData();
+    const data = await readData();
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error handling GET request for contact info:', error);
-    return NextResponse.json({ error: 'Failed to retrieve contact info' }, { status: 500 });
+    return new NextResponse('Error reading contact information', { status: 500 });
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const content = await request.json();
-    await fs.writeFile(contactInfoFilePath, JSON.stringify(content, null, 2));
-    return NextResponse.json({ success: true });
+    const json = await req.json();
+    const validatedData = contactInfoSchema.parse(json);
+    await writeData(validatedData);
+    return new NextResponse(JSON.stringify(validatedData), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
-    console.error('Error saving contact info file:', error);
-    return NextResponse.json({ error: 'Failed to save' }, { status: 500 });
+    if (error instanceof z.ZodError) {
+      return new NextResponse(JSON.stringify(error.issues), { status: 400 });
+    }
+    return new NextResponse('Error writing contact information', { status: 500 });
   }
 }

@@ -17,7 +17,7 @@ import {
     TableBody,
     TableCell,
 } from "@/components/ui/table";
-import { getTestimonials, saveTestimonial, deleteTestimonial, Testimonial } from "@/lib/testimonials";
+import { getTestimonials, addTestimonial, updateTestimonial, deleteTestimonial, Testimonial } from "@/lib/testimonials";
 import { getTestimonialsSection, saveTestimonialsSection, TestimonialsSection } from "@/lib/testimonials-section";
 import { getHomeContent } from "@/lib/home"; // For brand name
 import { useToast } from "@/hooks/use-toast";
@@ -76,7 +76,11 @@ export function TestimonialsTab() {
             }
 
             const newTestimonialData = { ...testimonialData, authorImageUrl: finalAuthorImageUrl };
-            await saveTestimonial(newTestimonialData);
+            if(newTestimonialData.id) {
+                await updateTestimonial(newTestimonialData.id, newTestimonialData)
+            } else {
+                await addTestimonial(newTestimonialData);
+            }
             setTestimonials(prev => {
                 const index = prev.findIndex(t => t.id === newTestimonialData.id);
                 if (index >= 0) {

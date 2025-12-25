@@ -16,7 +16,7 @@ export function Hero() {
 
   if (!content) {
     return (
-        <section id="home" className="relative h-[80vh] min-h-[600px] w-full bg-secondary">
+        <section id="home" className="relative h-screen min-h-[600px] w-full bg-secondary">
             <div className="flex h-full items-center justify-center">Loading...</div>
         </section>
     );
@@ -25,7 +25,7 @@ export function Hero() {
   const { hero } = content;
 
   return (
-    <section id="home" className="relative h-[80vh] min-h-[600px] w-full">
+    <section id="home" className="relative h-screen min-h-[600px] w-full">
       {hero.imageUrl && (
         <Image
           src={hero.imageUrl}

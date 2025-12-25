@@ -60,7 +60,7 @@ export function Header({ homeContent }: { homeContent: HomeContent | null }) {
           : "bg-transparent"
       )}
     >
-      <div className="container mx-auto flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 flex-shrink-0">
           {homeContent?.brand.logoUrl ? (
             <Image src={homeContent.brand.logoUrl} alt={homeContent.brand.name} width={40} height={40} className="h-8 w-auto flex-shrink-0 object-contain" />
@@ -71,12 +71,8 @@ export function Header({ homeContent }: { homeContent: HomeContent | null }) {
 
         <div className="flex-1 min-w-0 overflow-hidden">
           <div className="relative h-full flex items-center">
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background w-full h-full z-10 pointer-events-none md:from-transparent" />
-            <div className="w-full whitespace-nowrap marquee">
+            <div className="w-full whitespace-nowrap">
               <span className="font-headline text-xl font-bold text-foreground sm:text-2xl mr-4">
-                {homeContent?.brand.name || "Bhawani Shankar Rice"}
-              </span>
-              <span className="font-headline text-xl font-bold text-foreground sm:text-2xl mr-4" aria-hidden="true">
                 {homeContent?.brand.name || "Bhawani Shankar Rice"}
               </span>
             </div>
