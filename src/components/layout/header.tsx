@@ -1,29 +1,36 @@
+'use client';
 
-"use client";
-
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Menu, X, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
-import { RiceBowl } from "@/components/icons";
-import { cn } from "@/lib/utils";
-import { HomeContent } from "@/lib/home";
-import Image from "next/image";
-import { logOut } from "@/lib/auth";
-import { useAuth } from "@/hooks/use-auth";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Menu, X, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { RiceBowl } from '@/components/icons';
+import { cn } from '@/lib/utils';
+import { HomeContent, getHomeContent } from '@/lib/home';
+import Image from 'next/image';
+import { logOut } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-auth';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const sections = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Products", href: "/products" },
-  { name: "Gallery", href: "/#gallery" },
-  { name: "Contact", href: "/contact" },
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Products', href: '/products' },
+  { name: 'Gallery', href: '/gallery' },
+  { name: 'Contact', href: '/contact' },
 ];
 
-export function Header({ homeContent }: { homeContent: HomeContent | null }) {
+export function Header() {
+  const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useAuth();
@@ -31,33 +38,49 @@ export function Header({ homeContent }: { homeContent: HomeContent | null }) {
   const router = useRouter();
 
   useEffect(() => {
+    const fetchHomeContent = async () => {
+      const content = await getHomeContent();
+      setHomeContent(content);
+    };
+    fetchHomeContent();
+
+    const handleStorageChange = () => {
+      fetchHomeContent();
+    };
+
+    window.addEventListener('content-updated', handleStorageChange);
+    return () => {
+      window.removeEventListener('content-updated', handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener("scroll", handleScroll);
-
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   const handleLogout = async () => {
     const { success, error } = await logOut();
     if (success) {
-      toast({ title: "Logged Out", description: "You have been successfully logged out." });
-      router.push("/");
+      toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
+      router.push('/');
     } else {
-      toast({ title: "Logout Failed", description: error, variant: "destructive" });
+      toast({ title: 'Logout Failed', description: error, variant: 'destructive' });
     }
   };
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        'sticky top-0 z-50 w-full transition-all duration-300',
         isScrolled
-          ? "border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-          : "bg-transparent"
+          ? 'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+          : 'bg-transparent'
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -73,7 +96,7 @@ export function Header({ homeContent }: { homeContent: HomeContent | null }) {
           <div className="relative h-full flex items-center">
             <div className="w-full whitespace-nowrap">
               <span className="font-headline text-xl font-bold text-foreground sm:text-2xl mr-4">
-                {homeContent?.brand.name || "Bhawani Shankar Rice"}
+                {homeContent?.brand.name}
               </span>
             </div>
           </div>
@@ -110,7 +133,7 @@ export function Header({ homeContent }: { homeContent: HomeContent | null }) {
               <SheetHeader className="sr-only">
                 <SheetTitle>Mobile Menu</SheetTitle>
                 <SheetDescription>
-                  Navigation links for the Bhawani Shankar Rice Trader website.
+                  Navigation links for the website.
                 </SheetDescription>
               </SheetHeader>
               <div className="flex h-full flex-col">
@@ -122,7 +145,7 @@ export function Header({ homeContent }: { homeContent: HomeContent | null }) {
                       <RiceBowl className="h-8 w-8 text-primary" />
                     )}
                     <span className="font-headline text-xl font-bold text-foreground">
-                      {homeContent?.brand.name || "Bhawani Shankar Rice Trader"}
+                      {homeContent?.brand.name}
                     </span>
                   </Link>
                   <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>

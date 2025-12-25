@@ -4,9 +4,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { AuthProvider } from "@/hooks/use-auth"; // Import the AuthProvider
+import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
-import { getHomeContent } from "@/lib/home";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +19,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const homeContent = await getHomeContent();
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider> {/* Wrap the application with AuthProvider */}
-          <Header homeContent={homeContent} />
+        <AuthProvider>
+          <Header />
           <main>{children}</main>
           <Toaster />
           <Footer />

@@ -173,7 +173,7 @@ export function HomeEditDialog({
                 <Input
                   value={currentContent.brand.name}
                   onChange={(e) =>
-                    handleContentChange('brand', 'name', e.target.value)
+                    handleContentChange('brand', 'name', e.target.value.trim())
                   }
                 />
               </div>

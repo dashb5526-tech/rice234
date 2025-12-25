@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -13,11 +13,13 @@ import { getHomeContent, saveHomeContent, HomeContent } from "@/lib/home";
 import { useToast } from "@/hooks/use-toast";
 import { Edit } from "lucide-react";
 import { HomeEditDialog } from "@/components/admin/home-edit-dialog";
+import { useRouter } from "next/navigation";
 
 export function HomeTab() {
     const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
     const [isHomeDialogOpen, setIsHomeDialogOpen] = useState(false);
     const { toast } = useToast();
+    const router = useRouter();
 
     const fetchData = async () => {
         try {
@@ -78,6 +80,7 @@ export function HomeTab() {
             setHomeContent(newContent);
             setIsHomeDialogOpen(false);
             toast({ title: "Home Content Saved", description: "Home page content has been updated." });
+            window.dispatchEvent(new CustomEvent('content-updated'));
         } catch (error) {
             toast({ title: "Save Failed", description: "Could not save home content.", variant: "destructive" });
         }
