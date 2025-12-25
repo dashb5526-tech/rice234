@@ -17,27 +17,10 @@ export async function getPartners(): Promise<Partner[]> {
     }
 }
 
-async function saveAllPartners(partners: Partner[]): Promise<void> {
+export async function saveAllPartners(partners: Partner[]): Promise<void> {
     await fetch('/api/partners', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(partners),
     });
-}
-
-export async function savePartner(partner: Partner): Promise<void> {
-    const allPartners = await getPartners();
-    const index = allPartners.findIndex(p => p.id === partner.id);
-    if (index !== -1) {
-        allPartners[index] = partner;
-    } else {
-        allPartners.push(partner);
-    }
-    await saveAllPartners(allPartners);
-}
-
-export async function deletePartner(partnerId: string): Promise<void> {
-    const allPartners = await getPartners();
-    const updatedPartners = allPartners.filter(p => p.id !== partnerId);
-    await saveAllPartners(updatedPartners);
 }

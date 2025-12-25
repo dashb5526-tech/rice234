@@ -9,7 +9,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { getGalleryContent, saveGalleryContent, deleteGalleryImage, GalleryContent, GalleryImage } from "@/lib/gallery";
+import { getGalleryContent, saveGalleryContent, GalleryContent, GalleryImage } from "@/lib/gallery";
 import Image from 'next/image';
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
@@ -46,7 +46,6 @@ export function GalleryTab() {
 
         try {
             let finalImageUrl = "";
-            // In edit mode with no new file, preserve existing URL
             if (!selectedFile && imageData.id) {
                 const existing = galleryContent.galleryImages.find(img => img.id === imageData.id);
                 if (existing) finalImageUrl = existing.imageUrl;
@@ -63,12 +62,6 @@ export function GalleryTab() {
             }
 
             const newImage: GalleryImage = { ...imageData, imageUrl: finalImageUrl };
-
-            // Update local state first (optimistic or just updating the object)
-            // Actually we need to call saveGalleryContent which saves the WHOLE content including the array.
-            // Wait, getGalleryContent returns { id, title, description, galleryImages: [] }
-            // So we need to update the array in galleryContent and save it.
-
             let newImages = [...galleryContent.galleryImages];
             const index = newImages.findIndex(img => img.id === imageData.id);
             if (index >= 0) {
@@ -89,17 +82,12 @@ export function GalleryTab() {
     };
 
     const handleGalleryImageDelete = async (id: string) => {
-        // There is a deleteGalleryImage utility, let's use it.
+        if (!galleryContent) return;
         try {
-            await deleteGalleryImage(id);
-            // Assuming deleteGalleryImage handles the backend update.
-            // We need to update local state.
-            if (galleryContent) {
-                setGalleryContent({
-                    ...galleryContent,
-                    galleryImages: galleryContent.galleryImages.filter(img => img.id !== id)
-                });
-            }
+            const newImages = galleryContent.galleryImages.filter(img => img.id !== id);
+            const newContent = { ...galleryContent, galleryImages: newImages };
+            await saveGalleryContent(newContent);
+            setGalleryContent(newContent);
             toast({ title: "Image Deleted", description: "Gallery image has been removed." });
         } catch (error) {
             toast({ title: "Delete Failed", description: "Could not delete the image.", variant: "destructive" });

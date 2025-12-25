@@ -17,7 +17,7 @@ import {
     TableBody,
     TableCell,
 } from "@/components/ui/table";
-import { getPartners, savePartner, deletePartner, Partner } from "@/lib/partners";
+import { getPartners, saveAllPartners, Partner } from "@/lib/partners";
 import Image from 'next/image';
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
@@ -61,17 +61,17 @@ export function PartnersTab() {
             }
 
             const newPartnerData = { ...partnerData, logoUrl: finalLogoUrl };
-            await savePartner(newPartnerData);
-            setPartners(prev => {
-                const index = prev.findIndex(p => p.id === newPartnerData.id);
-                if (index >= 0) {
-                    const newPartners = [...prev];
-                    newPartners[index] = newPartnerData;
-                    return newPartners;
-                } else {
-                    return [...prev, newPartnerData];
-                }
-            });
+            const updatedPartners = [...partners];
+            const partnerIndex = updatedPartners.findIndex(p => p.id === newPartnerData.id);
+
+            if (partnerIndex > -1) {
+                updatedPartners[partnerIndex] = newPartnerData;
+            } else {
+                updatedPartners.push(newPartnerData);
+            }
+
+            await saveAllPartners(updatedPartners);
+            setPartners(updatedPartners);
             setIsPartnerDialogOpen(false);
             toast({ title: "Partner Saved", description: "Partner has been successfully saved." });
         } catch (error) {
@@ -81,8 +81,9 @@ export function PartnersTab() {
 
     const handlePartnerDelete = async (id: string) => {
         try {
-            await deletePartner(id);
-            setPartners(prev => prev.filter(p => p.id !== id));
+            const updatedPartners = partners.filter(p => p.id !== id);
+            await saveAllPartners(updatedPartners);
+            setPartners(updatedPartners);
             toast({ title: "Partner Deleted", description: "Partner has been removed." });
         } catch (error) {
             toast({ title: "Delete Failed", description: "Could not delete partner.", variant: "destructive" });

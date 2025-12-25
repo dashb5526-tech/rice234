@@ -17,7 +17,7 @@ import {
     TableBody,
     TableCell,
 } from "@/components/ui/table";
-import { getTestimonials, addTestimonial, updateTestimonial, deleteTestimonial, Testimonial } from "@/lib/testimonials";
+import { getTestimonials, saveAllTestimonials, Testimonial } from "@/lib/testimonials";
 import { getTestimonialsSection, saveTestimonialsSection, TestimonialsSection } from "@/lib/testimonials-section";
 import { getHomeContent } from "@/lib/home"; // For brand name
 import { useToast } from "@/hooks/use-toast";
@@ -76,21 +76,17 @@ export function TestimonialsTab() {
             }
 
             const newTestimonialData = { ...testimonialData, authorImageUrl: finalAuthorImageUrl };
-            if(newTestimonialData.id) {
-                await updateTestimonial(newTestimonialData.id, newTestimonialData)
+            const updatedTestimonials = [...testimonials];
+            const testimonialIndex = updatedTestimonials.findIndex(t => t.id === newTestimonialData.id);
+
+            if (testimonialIndex > -1) {
+                updatedTestimonials[testimonialIndex] = newTestimonialData;
             } else {
-                await addTestimonial(newTestimonialData);
+                updatedTestimonials.push(newTestimonialData);
             }
-            setTestimonials(prev => {
-                const index = prev.findIndex(t => t.id === newTestimonialData.id);
-                if (index >= 0) {
-                    const newTestimonials = [...prev];
-                    newTestimonials[index] = newTestimonialData;
-                    return newTestimonials;
-                } else {
-                    return [...prev, newTestimonialData];
-                }
-            });
+
+            await saveAllTestimonials(updatedTestimonials);
+            setTestimonials(updatedTestimonials);
             setIsTestimonialDialogOpen(false);
             toast({ title: "Testimonial Saved", description: "The testimonial has been saved." });
         } catch (error) {
@@ -101,8 +97,9 @@ export function TestimonialsTab() {
 
     const handleTestimonialDelete = async (id: string) => {
         try {
-            await deleteTestimonial(id);
-            setTestimonials(prev => prev.filter(t => t.id !== id));
+            const updatedTestimonials = testimonials.filter(t => t.id !== id);
+            await saveAllTestimonials(updatedTestimonials);
+            setTestimonials(updatedTestimonials);
             toast({ title: "Testimonial Deleted", description: "The testimonial has been removed." });
         } catch (error) {
             toast({ title: "Delete Failed", description: "Could not delete testimonial.", variant: "destructive" });

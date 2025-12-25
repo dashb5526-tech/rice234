@@ -1,43 +1,38 @@
-import { Certificate } from '@/lib/types';
-import certificatesData from '@/lib/data/certificates.json';
+import certificatesData from "./data/certificates.json";
+import type { Certificate } from "./types";
 
-export type { Certificate };
+function getBaseUrl() {
+    if (typeof window !== 'undefined') return '';
+    if (process.env.NEXT_PUBLIC_VERCEL_URL) return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+    return 'http://localhost:9002';
+}
 
 export async function getCertificates(): Promise<Certificate[]> {
+    const baseUrl = getBaseUrl();
     try {
-        const baseUrl = typeof window === 'undefined' ? (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : 'http://localhost:9002') : '';
         const response = await fetch(`${baseUrl}/api/certificates`);
         if (!response.ok) {
-            return certificatesData;
+            return certificatesData as Certificate[];
         }
         return await response.json();
     } catch (error) {
-        console.error('Error fetching certificates, falling back to local data', error);
-        return certificatesData;
+        console.error("Failed to fetch certificates", error);
+        return certificatesData as Certificate[];
     }
 }
 
-async function saveAllCertificates(certificates: Certificate[]): Promise<void> {
-    await fetch('/api/certificates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(certificates),
-    });
-}
-
-export async function saveCertificate(certificate: Certificate): Promise<void> {
-    const allCertificates = await getCertificates();
-    const index = allCertificates.findIndex(c => c.id === certificate.id);
-    if (index !== -1) {
-        allCertificates[index] = certificate;
-    } else {
-        allCertificates.push(certificate);
+export async function saveAllCertificates(certificates: Certificate[]): Promise<void> {
+    const baseUrl = getBaseUrl();
+    try {
+        await fetch(`${baseUrl}/api/certificates`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(certificates),
+        });
+    } catch (error) {
+        console.error("Failed to save certificates", error);
+        throw error;
     }
-    await saveAllCertificates(allCertificates);
-}
-
-export async function deleteCertificate(certificateId: string): Promise<void> {
-    const allCertificates = await getCertificates();
-    const updatedCertificates = allCertificates.filter(c => c.id !== certificateId);
-    await saveAllCertificates(updatedCertificates);
 }

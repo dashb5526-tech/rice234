@@ -43,6 +43,7 @@ export function SeoTab() {
             setSeoContent(content);
             setIsSeoDialogOpen(false);
             toast({ title: "SEO Saved", description: "SEO settings updated." });
+            window.dispatchEvent(new CustomEvent('content-updated'));
         } catch (error) {
             toast({ title: "Save Failed", description: "Could not save SEO content.", variant: "destructive" });
         }

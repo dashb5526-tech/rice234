@@ -26,13 +26,37 @@ export interface HomeContent {
     seo: Seo;
 }
 
+function getBaseUrl() {
+    if (typeof window !== 'undefined') return '';
+    if (process.env.NEXT_PUBLIC_VERCEL_URL) return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+    return 'http://localhost:9002';
+}
+
 export const getHomeContent = async (): Promise<HomeContent> => {
-    return Promise.resolve(homeData as HomeContent);
+    try {
+        const baseUrl = getBaseUrl();
+        const response = await fetch(`${baseUrl}/api/home`);
+        if (!response.ok) {
+            return homeData as HomeContent;
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Failed to fetch home content", error);
+        return homeData as HomeContent;
+    }
 };
 
 export const saveHomeContent = async (content: HomeContent): Promise<void> => {
-    // In a real application, you would save the content to a database or file.
-    // For this example, we'll just log it to the console.
-    console.log("Saving home content:", content);
-    return Promise.resolve();
+    try {
+        await fetch("/api/home", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(content),
+        });
+    } catch (error) {
+        console.error("Failed to save home content", error);
+        throw error;
+    }
 };

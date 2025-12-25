@@ -10,8 +10,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function TermsAndConditionsPage() {
   const [content, setContent] = useState<TermsContent | null>(null);
 
-  useEffect(() => {
+  const fetchContent = () => {
     getTermsContent().then(setContent);
+  };
+
+  useEffect(() => {
+    fetchContent();
+    window.addEventListener('content-updated', fetchContent);
+    return () => {
+      window.removeEventListener('content-updated', fetchContent);
+    };
   }, []);
 
   return (

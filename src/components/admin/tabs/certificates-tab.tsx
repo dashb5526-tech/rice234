@@ -17,7 +17,7 @@ import {
     TableBody,
     TableCell,
 } from "@/components/ui/table";
-import { getCertificates, saveCertificate, deleteCertificate, Certificate } from "@/lib/certificates";
+import { getCertificates, saveAllCertificates, Certificate } from "@/lib/certificates";
 import { getCertificatesSection, saveCertificatesSection, CertificatesSection } from "@/lib/certificates-section";
 import Image from 'next/image';
 import { useToast } from "@/hooks/use-toast";
@@ -66,17 +66,17 @@ export function CertificatesTab() {
                 }
             }
             const newCertData = { ...certData, imageUrl: finalImageUrl };
-            await saveCertificate(newCertData);
-            setCertificates(prev => {
-                const index = prev.findIndex(c => c.id === newCertData.id);
-                if (index >= 0) {
-                    const newCerts = [...prev];
-                    newCerts[index] = newCertData;
-                    return newCerts;
-                } else {
-                    return [...prev, newCertData];
-                }
-            });
+            const updatedCertificates = [...certificates];
+            const certificateIndex = updatedCertificates.findIndex(c => c.id === newCertData.id);
+
+            if (certificateIndex > -1) {
+                updatedCertificates[certificateIndex] = newCertData;
+            } else {
+                updatedCertificates.push(newCertData);
+            }
+
+            await saveAllCertificates(updatedCertificates);
+            setCertificates(updatedCertificates);
             setIsCertificateDialogOpen(false);
             toast({ title: "Certificate Saved", description: "Certificate has been successfully saved." });
         } catch (error) {
@@ -86,8 +86,9 @@ export function CertificatesTab() {
 
     const handleCertificateDelete = async (id: string) => {
         try {
-            await deleteCertificate(id);
-            setCertificates(prev => prev.filter(c => c.id !== id));
+            const updatedCertificates = certificates.filter(c => c.id !== id);
+            await saveAllCertificates(updatedCertificates);
+            setCertificates(updatedCertificates);
             toast({ title: "Certificate Deleted", description: "Certificate has been removed." });
         } catch (error) {
             toast({ title: "Delete Failed", description: "Could not delete certificate.", variant: "destructive" });

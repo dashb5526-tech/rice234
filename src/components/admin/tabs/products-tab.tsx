@@ -18,7 +18,7 @@ import {
     TableCell,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { getProducts, saveProduct, deleteProduct, Product } from "@/lib/products";
+import { getProducts, saveAllProducts, Product } from "@/lib/products";
 import { getProductsSection, saveProductsSection, ProductsSection } from "@/lib/products-section";
 import Image from 'next/image';
 import { useToast } from "@/hooks/use-toast";
@@ -58,63 +58,35 @@ export function ProductsTab() {
     const handleProductSave = async (productData: Omit<Product, 'id'>, id: string, selectedFile: File | null) => {
         try {
             let finalImageUrl = productData.imageUrl;
-            // In a real app, upload the file and get the URL
-            if (selectedFile) {
-                // Mock upload logic or actual API call if mock is updated
-                // For now, we simulate strictly by returning the objectURL if used in dialog, 
-                // but typically the API handles the file. 
-                // The previous implementation utilized a mock `uploadImage` or similar inside `saveProduct` 
-                // OR the dialog handled it. 
-                // Looking at original code:
-                /*
-                  if (selectedFile) {
-                    const formData = new FormData();
-                    formData.append('file', selectedFile);
-                    const response = await fetch('/api/upload', { method: 'POST', body: formData });
-                    const result = await response.json();
-                    finalImageUrl = result.imageUrl;
-                  }
-                */
-                // Since I don't have the upload API endpoints mocked out in my head perfectly, 
-                // I will assume the `saveProduct` or the logic here needs to handle it.
-                // In the original code (viewed in `AdminPage`), it was:
-                /*
-                 if (selectedFile) {
-                    const formData = new FormData();
-                    formData.append('file', selectedFile);
-                    const response = await fetch('/api/upload', { method: 'POST', body: formData });
-                    if (!response.ok) throw new Error('Upload failed');
-                    const result = await response.json();
-                    finalImageUrl = result.imageUrl;
-                 }
-                */
-                // I should stick to that pattern if `/api/upload` exists. 
-                // But I'll use a placeholder for now since I can't confirm the API existence without checking.
-                // Actually, I'll trust the original pattern.
 
+            if (selectedFile) {
                 const formData = new FormData();
                 formData.append('file', selectedFile);
                 const response = await fetch('/api/upload', { method: 'POST', body: formData });
                 if (response.ok) {
                     const result = await response.json();
                     finalImageUrl = result.imageUrl;
+                } else {
+                    throw new Error('Image upload failed');
                 }
             }
 
             const newProduct: Product = { ...productData, id, imageUrl: finalImageUrl };
-            await saveProduct(newProduct);
-            setProducts(prev => {
-                const index = prev.findIndex(p => p.id === id);
-                if (index >= 0) {
-                    const newProducts = [...prev];
-                    newProducts[index] = newProduct;
-                    return newProducts;
-                } else {
-                    return [...prev, newProduct];
-                }
-            });
+
+            const updatedProducts = [...products];
+            const productIndex = updatedProducts.findIndex(p => p.id === id);
+
+            if (productIndex > -1) {
+                updatedProducts[productIndex] = newProduct;
+            } else {
+                updatedProducts.push(newProduct);
+            }
+
+            await saveAllProducts(updatedProducts);
+            setProducts(updatedProducts);
             setIsProductDialogOpen(false);
             toast({ title: "Product Saved", description: "The product has been successfully saved." });
+            window.dispatchEvent(new CustomEvent('content-updated'));
         } catch (error) {
             console.error("Failed to save product", error);
             toast({ title: "Save Failed", description: "Could not save the product.", variant: "destructive" });
@@ -123,9 +95,11 @@ export function ProductsTab() {
 
     const handleProductDelete = async (id: string) => {
         try {
-            await deleteProduct(id);
-            setProducts(prev => prev.filter(p => p.id !== id));
+            const updatedProducts = products.filter(p => p.id !== id);
+            await saveAllProducts(updatedProducts);
+            setProducts(updatedProducts);
             toast({ title: "Product Deleted", description: "The product has been removed." });
+            window.dispatchEvent(new CustomEvent('content-updated'));
         } catch (error) {
             toast({ title: "Delete Failed", description: "Could not delete the product.", variant: "destructive" });
         }
@@ -134,9 +108,10 @@ export function ProductsTab() {
     const handleProductsSectionSave = async (content: ProductsSection) => {
         try {
             await saveProductsSection(content);
-            setProductsSection(content);
+            fetchData(); // Refetch data
             setIsProductsSectionDialogOpen(false);
             toast({ title: "Section Updated", description: "Products section content saved." });
+            window.dispatchEvent(new CustomEvent('content-updated'));
         } catch (error) {
             toast({ title: "Save Failed", description: "Could not save section content.", variant: "destructive" });
         }

@@ -38,30 +38,17 @@ export async function getTestimonialById(id: string): Promise<Testimonial | unde
   return testimonials.find(t => t.id === id);
 }
 
-// The following functions (add, update, delete) would typically be implemented
-// by making API calls to corresponding serverless functions or a backend API.
-// For this example, they are not fully implemented.
-
-export async function addTestimonial(testimonial: Omit<Testimonial, 'id'>): Promise<Testimonial> {
-  // This is a placeholder implementation.
-  console.log("Adding testimonial (placeholder):", testimonial);
-  const newTestimonial = { ...testimonial, id: `testimonial-${Date.now()}` };
-  return testimonialSchema.parse(newTestimonial);
-}
-
-export async function updateTestimonial(id: string, updates: Partial<Testimonial>): Promise<Testimonial | null> {
-  // This is a placeholder implementation.
-  console.log(`Updating testimonial ${id} (placeholder):`, updates);
-  const testimonials = await fetchTestimonials();
-  const index = testimonials.findIndex(t => t.id === id);
-  if (index === -1) return null;
-
-  const updatedTestimonial = { ...testimonials[index], ...updates };
-  return testimonialSchema.parse(updatedTestimonial);
-}
-
-export async function deleteTestimonial(id: string): Promise<boolean> {
-  // This is a placeholder implementation.
-  console.log(`Deleting testimonial ${id} (placeholder)`);
-  return true;
-}
+export const saveAllTestimonials = async (testimonials: Testimonial[]): Promise<void> => {
+    try {
+        await fetch("/api/testimonials", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(testimonials),
+        });
+    } catch (error) {
+        console.error("Failed to save testimonials", error);
+        throw error;
+    }
+};

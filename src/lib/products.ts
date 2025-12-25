@@ -27,16 +27,17 @@ export const getProductById = async (id: string): Promise<Product | undefined> =
     return Promise.resolve(product);
 };
 
-export const saveProduct = async (product: Product): Promise<void> => {
-    // In a real application, you would save the product to a database or file.
-    // For this example, we'll just log it to the console.
-    console.log("Saving product:", product);
-    return Promise.resolve();
-};
-
-export const deleteProduct = async (id: string): Promise<void> => {
-    // In a real application, you would delete the product from a database or file.
-    // For this example, we'll just log it to the console.
-    console.log("Deleting product with id:", id);
-    return Promise.resolve();
+export const saveAllProducts = async (products: Product[]): Promise<void> => {
+    try {
+        await fetch("/api/products", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(products),
+        });
+    } catch (error) {
+        console.error("Failed to save products", error);
+        throw error;
+    }
 };

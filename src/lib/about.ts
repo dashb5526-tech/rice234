@@ -30,8 +30,16 @@ export const getAboutContent = async (): Promise<AboutContent> => {
 };
 
 export const saveAboutContent = async (content: AboutContent): Promise<void> => {
-    // In a real application, you would save the content to a database or file.
-    // For this example, we'll just log it to the console.
-    console.log("Saving about content:", content);
-    return Promise.resolve();
+    try {
+        await fetch("/api/about", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(content),
+        });
+    } catch (error) {
+        console.error("Failed to save about content", error);
+        throw error;
+    }
 };

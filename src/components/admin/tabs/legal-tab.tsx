@@ -43,6 +43,7 @@ export function LegalTab() {
             setTermsContent(content);
             setIsTermsDialogOpen(false);
             toast({ title: "Terms Saved", description: "Terms and conditions updated." });
+            window.dispatchEvent(new CustomEvent('content-updated'));
         } catch (error) {
             toast({ title: "Save Failed", description: "Could not save terms.", variant: "destructive" });
         }
