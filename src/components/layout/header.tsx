@@ -94,10 +94,18 @@ export function Header() {
 
         <div className="flex-1 min-w-0 overflow-hidden">
           <div className="relative h-full flex items-center">
-            <div className="w-full whitespace-nowrap">
-              <span className="font-headline text-xl font-bold text-foreground sm:text-2xl mr-4">
-                {homeContent?.brand.name}
-              </span>
+            {/* Mobile - Marquee */}
+            <div className="sm:hidden w-full">
+                <div className="marquee whitespace-nowrap flex">
+                    <span className="font-headline text-xl font-bold text-foreground mr-4">{homeContent?.brand.name}</span>
+                    <span className="font-headline text-xl font-bold text-foreground mr-4" aria-hidden="true">{homeContent?.brand.name}</span>
+                </div>
+            </div>
+            {/* Desktop - Static */}
+            <div className="hidden sm:block w-full whitespace-nowrap">
+                <span className="font-headline text-xl font-bold text-foreground sm:text-2xl truncate">
+                    {homeContent?.brand.name}
+                </span>
             </div>
           </div>
         </div>
