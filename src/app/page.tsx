@@ -26,8 +26,8 @@ export default function Home() {
     <div className="flex min-h-screen w-full flex-col bg-background">
       <div className="flex-1">
         <Hero />
-        <About />
         <Products isHomePage={true} />
+        <About />
         <Certificates />
         <Testimonials />
         <Gallery />

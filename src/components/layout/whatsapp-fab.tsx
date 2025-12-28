@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getContactInfo, ContactInfo } from '@/lib/contact-info';
-import { cn } from '@/lib/utils';
 
 function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
@@ -20,7 +19,6 @@ function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export function WhatsAppFAB() {
     const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -29,20 +27,9 @@ export function WhatsAppFAB() {
         };
 
         fetchContactInfo();
-
-        const toggleVisibility = () => {
-            if (window.pageYOffset > 300) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-        };
-
-        window.addEventListener('scroll', toggleVisibility);
         window.addEventListener('focus', fetchContactInfo);
 
         return () => {
-            window.removeEventListener('scroll', toggleVisibility);
             window.removeEventListener('focus', fetchContactInfo);
         };
     }, []);
@@ -89,10 +76,7 @@ export function WhatsAppFAB() {
             )}
             <button
                 onClick={handleToggle}
-                className={cn(
-                    "fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-opacity duration-300 hover:bg-[#128C7E]",
-                    isVisible ? 'opacity-100' : 'opacity-0'
-                )}
+                className="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-opacity duration-300 hover:bg-[#128C7E] opacity-100"
                 aria-label="Open WhatsApp chat"
             >
                 <WhatsAppIcon className="h-8 w-8" />
@@ -100,4 +84,3 @@ export function WhatsAppFAB() {
         </>
     );
 }
-    

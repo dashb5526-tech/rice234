@@ -6,6 +6,8 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
+import { WhatsAppFAB } from "@/components/layout/whatsapp-fab";
+import { DirectCallFAB } from "@/components/layout/direct-call-fab";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +28,8 @@ export default async function RootLayout({
           <Header />
           <main>{children}</main>
           <Toaster />
+          <WhatsAppFAB />
+          <DirectCallFAB />
           <Footer />
         </AuthProvider>
       </body>

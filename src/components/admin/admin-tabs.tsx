@@ -16,6 +16,7 @@ import { SeoTab } from "@/components/admin/tabs/seo-tab";
 import { InquiriesTab } from "@/components/admin/tabs/inquiries-tab";
 import { UsersTab } from "@/components/admin/tabs/users-tab";
 import { OrdersTab } from "@/components/admin/tabs/orders-tab";
+import { DirectCallContactsTab } from "@/components/admin/tabs/direct-call-contacts-tab";
 
 export function AdminTabs() {
   return (
@@ -35,6 +36,7 @@ export function AdminTabs() {
         <TabsTrigger value="seo">SEO</TabsTrigger>
         <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
         <TabsTrigger value="users">Users</TabsTrigger>
+        <TabsTrigger value="direct-call">Direct Call</TabsTrigger>
       </TabsList>
       <TabsContent value="home" className="mt-6">
         <HomeTab />
@@ -77,6 +79,9 @@ export function AdminTabs() {
       </TabsContent>
       <TabsContent value="users" className="mt-6">
         <UsersTab />
+      </TabsContent>
+      <TabsContent value="direct-call" className="mt-6">
+        <DirectCallContactsTab />
       </TabsContent>
     </Tabs>
   );
