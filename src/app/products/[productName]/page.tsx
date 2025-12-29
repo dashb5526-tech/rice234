@@ -6,10 +6,17 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductDetailPageClient } from '@/components/product-detail-page';
 
+// Generate static paths for all products
+export async function generateStaticParams() {
+  const allProducts = await getProducts();
+  return allProducts.map(product => ({
+    productName: product.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: { params: { productName: string } }): Promise<Metadata> {
   const allProducts = await getProducts();
-  const decodedSlug = decodeURIComponent(params.productName).replace(/-/g, ' ');
-  const product = allProducts.find(p => p.name.toLowerCase() === decodedSlug.toLowerCase());
+  const product = allProducts.find(p => p.slug === params.productName);
 
   if (!product) {
     return {
@@ -31,8 +38,7 @@ export async function generateMetadata({ params }: { params: { productName: stri
 
 export default async function ProductPage({ params }: { params: { productName: string } }) {
   const allProducts = await getProducts();
-  const decodedSlug = decodeURIComponent(params.productName).replace(/-/g, ' ');
-  const product = allProducts.find(p => p.name.toLowerCase() === decodedSlug.toLowerCase());
+  const product = allProducts.find(p => p.slug === params.productName);
 
   if (!product) {
     notFound();

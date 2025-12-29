@@ -1,3 +1,4 @@
+
 import productsData from "./data/products.json";
 
 export interface ProductSpec {
@@ -16,25 +17,34 @@ export interface Product {
     seoTitle: string;
     seoDescription: string;
     seoKeywords: string;
-    path: string; // Add path property
+    path: string;
+    slug: string;
 }
+
+const generateSlug = (name: string) => name.replace(/ /g, '-').toLowerCase();
 
 export const getProducts = async (): Promise<Product[]> => {
     // Add path to each product
-    const productsWithPaths = (productsData as Product[]).map(product => ({
-        ...product,
-        path: `/products/${encodeURIComponent(product.name.replace(/ /g, '-').toLowerCase())}`,
-    }));
+    const productsWithPaths = (productsData as Product[]).map(product => {
+        const slug = generateSlug(product.name);
+        return {
+            ...product,
+            slug: slug,
+            path: `/products/${encodeURIComponent(slug)}`,
+        }
+    });
     return Promise.resolve(productsWithPaths);
 };
 
 export const getProductById = async (id: string): Promise<Product | undefined> => {
     const product = (productsData as Product[]).find((p) => p.id === id);
     if (!product) return undefined;
+    const slug = generateSlug(product.name);
     // Add path to the product
     return Promise.resolve({
         ...product,
-        path: `/products/${encodeURIComponent(product.name.replace(/ /g, '-').toLowerCase())}`,
+        slug: slug,
+        path: `/products/${encodeURIComponent(slug)}`,
     });
 };
 

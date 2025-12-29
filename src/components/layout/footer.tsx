@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { RiceBowl } from "@/components/icons";
 import { Facebook, Instagram, Twitter, Youtube, Linkedin, Send } from "lucide-react";
+import { useToast } from '@/hooks/use-toast';
 
 const SocialIcon = ({ platform, url }: { platform: string, url: string }) => {
     const iconProps = { className: "w-6 h-6" };
@@ -46,6 +47,7 @@ export function Footer() {
     const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
     const [termsContent, setTermsContent] = useState<TermsContent | null>(null);
     const [email, setEmail] = useState("");
+    const { toast } = useToast();
 
     useEffect(() => {
         const fetchFooterData = async () => {
@@ -70,12 +72,28 @@ export function Footer() {
         fetchFooterData();
     }, []);
 
-    const handleNewsletterSubmit = (e: React.FormEvent) => {
+    const handleNewsletterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle newsletter subscription logic here
-        console.log("Newsletter submitted for:", email);
-        setEmail("");
-        // You would typically show a toast or message here
+        
+        try {
+            const response = await fetch('/api/newsletter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            if (response.ok) {
+                toast({ title: "Subscribed!", description: "You've been added to our newsletter." });
+                setEmail("");
+            } else {
+                const { error } = await response.json();
+                toast({ title: "Subscription failed", description: error, variant: "destructive" });
+            }
+        } catch (error) {
+            toast({ title: "Subscription failed", description: "An unexpected error occurred.", variant: "destructive" });
+        }
     };
 
 
