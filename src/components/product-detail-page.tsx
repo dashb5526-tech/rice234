@@ -15,6 +15,7 @@ import { HomeContent } from '@/lib/home';
 
 export function ProductDetailPageClient({ product }: { product: Product }) {
   const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
+  const [absoluteUrl, setAbsoluteUrl] = useState('');
 
   useEffect(() => {
     async function fetchHomeData() {
@@ -22,9 +23,9 @@ export function ProductDetailPageClient({ product }: { product: Product }) {
       setHomeContent(homeData);
     }
     fetchHomeData();
-  }, []);
+    setAbsoluteUrl(window.location.origin + product.path);
+  }, [product.path]);
 
-  const productUrl = typeof window !== 'undefined' ? window.location.href : '';
   const imageUrl = product.imageUrl ? product.imageUrl : undefined;
 
   const jsonLd = {
@@ -33,7 +34,7 @@ export function ProductDetailPageClient({ product }: { product: Product }) {
     name: product.name,
     description: product.description,
     image: imageUrl,
-    url: productUrl,
+    url: absoluteUrl,
     brand: {
       '@type': 'Brand',
       name: homeContent?.brand.name || 'Bhawani Shankar Rice Trader',
@@ -110,7 +111,7 @@ export function ProductDetailPageClient({ product }: { product: Product }) {
                  <Separator className="my-6" />
                 <div className="flex items-center gap-4">
                   <span className="text-sm font-medium text-muted-foreground">Share this product:</span>
-                  <NativeShareButton url={productUrl} title={product.name} description={product.description} />
+                  <NativeShareButton url={absoluteUrl} title={product.name} description={product.description} />
                 </div>
               </div>
             </div>
