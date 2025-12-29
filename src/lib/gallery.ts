@@ -1,3 +1,4 @@
+
 import galleryData from "./data/gallery.json";
 
 export interface GalleryImage {
@@ -13,28 +14,17 @@ export interface GalleryContent {
     galleryImages: GalleryImage[];
 }
 
-function getBaseUrl() {
-    if (typeof window !== 'undefined') return '';
-    if (process.env.NEXT_PUBLIC_VERCEL_URL) return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    return 'http://localhost:9002';
-}
-
 export const getGalleryContent = async (): Promise<GalleryContent> => {
-    const baseUrl = getBaseUrl();
-    try {
-        const response = await fetch(`${baseUrl}/api/gallery`);
-        if (!response.ok) {
-            return galleryData as GalleryContent;
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch gallery content", error);
-        return galleryData as GalleryContent;
-    }
+    // Simulate fetching data from a database or CMS
+    return Promise.resolve(galleryData as GalleryContent);
 };
 
 export const saveGalleryContent = async (content: GalleryContent): Promise<void> => {
+    // In a real application, you would save this to a database or file.
+    // Here, we'll just log it to the console and simulate a successful save.
+    console.log("Saving gallery content:", content);
     try {
+        // Example of how you might save to an API endpoint:
         await fetch("/api/gallery", {
             method: "POST",
             headers: {
