@@ -6,12 +6,9 @@ import { getHomeContent, HomeContent } from "@/lib/home";
 import { getSocialLinks, SocialLink } from "@/lib/social-links";
 import { getTermsContent, TermsContent } from "@/lib/terms";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { RiceBowl } from "@/components/icons";
-import { Facebook, Instagram, Twitter, Youtube, Linkedin, Send } from "lucide-react";
-import { useToast } from '@/hooks/use-toast';
+import { Facebook, Instagram, Twitter, Youtube, Linkedin } from "lucide-react";
 
 const SocialIcon = ({ platform, url }: { platform: string, url: string }) => {
     const iconProps = { className: "w-6 h-6" };
@@ -46,8 +43,6 @@ export function Footer() {
     const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
     const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
     const [termsContent, setTermsContent] = useState<TermsContent | null>(null);
-    const [email, setEmail] = useState("");
-    const { toast } = useToast();
 
     useEffect(() => {
         const fetchFooterData = async () => {
@@ -72,37 +67,12 @@ export function Footer() {
         fetchFooterData();
     }, []);
 
-    const handleNewsletterSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        try {
-            const response = await fetch('/api/newsletter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email }),
-            });
-
-            if (response.ok) {
-                toast({ title: "Subscribed!", description: "You've been added to our newsletter." });
-                setEmail("");
-            } else {
-                const { error } = await response.json();
-                toast({ title: "Subscription failed", description: error, variant: "destructive" });
-            }
-        } catch (error) {
-            toast({ title: "Subscription failed", description: "An unexpected error occurred.", variant: "destructive" });
-        }
-    };
-
-
     return (
         <footer className="bg-secondary/50 text-secondary-foreground">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Brand and About */}
-                    <div className="md:col-span-2 lg:col-span-2 space-y-4">
+                    <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-2 text-xl font-bold">
                             <RiceBowl className="h-8 w-8 text-primary" />
                             <span>{homeContent?.brand?.name || "Rice Bowl"}</span>
@@ -138,25 +108,6 @@ export function Footer() {
                                 <p><strong>Email:</strong> {contactInfo.email}</p>
                             </address>
                         ) : <p className="text-muted-foreground">Loading...</p>}
-                    </div>
-
-                    {/* Newsletter */}
-                    <div className="space-y-4">
-                        <h4 className="font-headline font-semibold tracking-wider uppercase">Newsletter</h4>
-                        <p className="text-muted-foreground">Stay updated with our latest news and offers.</p>
-                        <form onSubmit={handleNewsletterSubmit} className="flex items-center gap-2">
-                            <Input 
-                                type="email" 
-                                placeholder="Your email" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
-                                required 
-                                className="bg-background/50"
-                            />
-                            <Button type="submit" size="icon" variant="ghost" className="flex-shrink-0">
-                                <Send className="h-5 w-5"/>
-                            </Button>
-                        </form>
                     </div>
                 </div>
                 

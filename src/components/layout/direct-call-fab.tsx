@@ -39,6 +39,20 @@ export function DirectCallFAB() {
         return null;
     }
 
+    // If there is only one contact, make the FAB a direct call link
+    if (contacts.length === 1) {
+        return (
+            <Link
+                href={`tel:${contacts[0].phone}`}
+                className="fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-opacity duration-300 hover:bg-primary-dark sm:h-16 sm:w-16"
+                aria-label={`Call ${contacts[0].name}`}
+            >
+                <PhoneIcon className="h-6 w-6 sm:h-8 sm:w-8" />
+            </Link>
+        );
+    }
+
+    // If there are multiple contacts, show the selection dialog
     return (
         <>
             {isOpen && (
@@ -75,10 +89,10 @@ export function DirectCallFAB() {
             )}
             <button
                 onClick={handleToggle}
-                className="fixed bottom-6 left-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-opacity duration-300 hover:bg-primary-dark"
+                className="fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-opacity duration-300 hover:bg-primary-dark sm:h-16 sm:w-16"
                 aria-label="Open direct call window"
             >
-                <PhoneIcon className="h-8 w-8" />
+                <PhoneIcon className="h-6 w-6 sm:h-8 sm:w-8" />
             </button>
         </>
     );
