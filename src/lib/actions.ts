@@ -3,6 +3,7 @@
 
 import * as z from "zod";
 import { saveSubmission } from './submissions';
+import { sendContactFormNotification, sendOrderFormNotification } from './email';
 
 const contactSchema = z.object({
   type: z.literal("contact"),
@@ -32,6 +33,26 @@ export async function submitForm(data: z.infer<typeof formSchema>) {
     const result = await saveSubmission(parsedData);
 
     if (result.success) {
+      // Send email notification
+      if (parsedData.type === 'contact') {
+        await sendContactFormNotification({
+          name: parsedData.name,
+          email: parsedData.email,
+          phone: parsedData.phone,
+          message: parsedData.message,
+        });
+      } else if (parsedData.type === 'order') {
+        await sendOrderFormNotification({
+          name: parsedData.name,
+          company: parsedData.company,
+          phone: parsedData.phone,
+          email: parsedData.email,
+          riceType: parsedData.riceType,
+          quantity: parsedData.quantity,
+          message: parsedData.message,
+        });
+      }
+
       return { success: true, message: "Form submitted successfully." };
     } else {
       return { success: false, message: result.message || "An unexpected error occurred." };
